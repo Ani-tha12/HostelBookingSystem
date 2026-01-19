@@ -14,7 +14,7 @@ public class UserMapper {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-        user.setPassword(request.getPassword()); // Will be encoded in service
+        user.setPassword(request.getPassword()); 
         user.setRole(request.getRole());
         user.setBusinessLicense(request.getBusinessLicense());
         return user;

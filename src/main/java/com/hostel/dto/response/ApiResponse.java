@@ -9,7 +9,7 @@ public class ApiResponse<T> {
     private T data;
     private LocalDateTime timestamp;
     
-    // Constructors
+   
     public ApiResponse() {
         this.timestamp = LocalDateTime.now();
     }
@@ -21,7 +21,7 @@ public class ApiResponse<T> {
         this.timestamp = LocalDateTime.now();
     }
     
-    // Static factory methods
+   
     public static <T> ApiResponse<T> success(String message, T data) {
         return new ApiResponse<>(true, message, data);
     }
@@ -30,7 +30,7 @@ public class ApiResponse<T> {
         return new ApiResponse<>(false, message, null);
     }
     
-    // Getters and Setters
+ 
     public boolean isSuccess() {
         return success;
     }

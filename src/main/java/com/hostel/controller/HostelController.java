@@ -19,7 +19,7 @@ public class HostelController {
     @Autowired
     private HostelService hostelService;
     
-    // POST: Add new hostel (Owner only)
+   
     @PostMapping
     public ResponseEntity<ApiResponse<HostelResponse>> addHostel(
             @Valid @RequestBody HostelRequest request) {
@@ -28,21 +28,20 @@ public class HostelController {
             .body(ApiResponse.success("Hostel added successfully. Pending admin approval.", response));
     }
     
-    // GET: Get all hostels (Public)
+   
     @GetMapping
     public ResponseEntity<ApiResponse<List<HostelResponse>>> getAllHostels() {
         List<HostelResponse> hostels = hostelService.getApprovedHostels();
         return ResponseEntity.ok(ApiResponse.success("Hostels retrieved successfully", hostels));
     }
     
-    // GET: Get hostel by ID (Public)
+    
     @GetMapping("/{hostelId}")
     public ResponseEntity<ApiResponse<HostelResponse>> getHostelById(@PathVariable Long hostelId) {
         HostelResponse response = hostelService.getHostelById(hostelId);
         return ResponseEntity.ok(ApiResponse.success("Hostel retrieved successfully", response));
     }
     
-    // GET: Search hostels by city (Public)
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<HostelResponse>>> searchHostelsByCity(
             @RequestParam String city) {
@@ -50,7 +49,7 @@ public class HostelController {
         return ResponseEntity.ok(ApiResponse.success("Search results retrieved", hostels));
     }
     
-    // GET: Get hostels by owner (Owner only)
+    
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity<ApiResponse<List<HostelResponse>>> getHostelsByOwner(
             @PathVariable Long ownerId) {
@@ -58,7 +57,7 @@ public class HostelController {
         return ResponseEntity.ok(ApiResponse.success("Owner hostels retrieved", hostels));
     }
     
-    // PUT: Update hostel (Owner only)
+    
     @PutMapping("/{hostelId}")
     public ResponseEntity<ApiResponse<HostelResponse>> updateHostel(
             @PathVariable Long hostelId,
@@ -67,7 +66,7 @@ public class HostelController {
         return ResponseEntity.ok(ApiResponse.success("Hostel updated successfully", response));
     }
     
-    // POST: Assign facilities to hostel (Owner only)
+    
     @PostMapping("/{hostelId}/facilities")
     public ResponseEntity<ApiResponse<HostelResponse>> assignFacilities(
             @PathVariable Long hostelId,
@@ -78,7 +77,7 @@ public class HostelController {
         );
     }
     
-    // DELETE: Remove facility from hostel (Owner only)
+    
     @DeleteMapping("/{hostelId}/facilities/{facilityId}")
     public ResponseEntity<ApiResponse<HostelResponse>> removeFacility(
             @PathVariable Long hostelId,
@@ -89,16 +88,14 @@ public class HostelController {
         );
     }
     
-    // DELETE: Delete hostel (Owner/Admin only)
+    
     @DeleteMapping("/{hostelId}")
     public ResponseEntity<ApiResponse<String>> deleteHostel(@PathVariable Long hostelId) {
         hostelService.deleteHostel(hostelId);
         return ResponseEntity.ok(ApiResponse.success("Hostel deleted successfully", null));
     }
     
-    // ========== ADMIN ENDPOINTS ==========
     
-    // GET: Get pending hostel approvals (Admin only)
     @GetMapping("/admin/pending")
     public ResponseEntity<ApiResponse<List<HostelResponse>>> getPendingHostels() {
         List<HostelResponse> hostels = hostelService.getPendingHostels();
@@ -107,14 +104,14 @@ public class HostelController {
         );
     }
     
-    // PUT: Approve hostel (Admin only)
+   
     @PutMapping("/admin/{hostelId}/approve")
     public ResponseEntity<ApiResponse<HostelResponse>> approveHostel(@PathVariable Long hostelId) {
         HostelResponse response = hostelService.approveHostel(hostelId);
         return ResponseEntity.ok(ApiResponse.success("Hostel approved successfully", response));
     }
     
-    // PUT: Reject hostel (Admin only)
+   
     @PutMapping("/admin/{hostelId}/reject")
     public ResponseEntity<ApiResponse<String>> rejectHostel(
             @PathVariable Long hostelId,
@@ -124,4 +121,3 @@ public class HostelController {
     }
 }
 
-// ===

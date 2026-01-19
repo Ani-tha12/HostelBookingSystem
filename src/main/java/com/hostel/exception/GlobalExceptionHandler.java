@@ -14,7 +14,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
-    // Handle ResourceNotFoundException
+   
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
             ResourceNotFoundException ex, WebRequest request) {
@@ -29,7 +29,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
     
-    // Handle UnauthorizedException
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnauthorizedException(
             UnauthorizedException ex, WebRequest request) {
@@ -44,7 +43,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
     
-    // Handle BadRequestException
+   
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequestException(
             BadRequestException ex, WebRequest request) {
@@ -59,7 +58,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
     
-    // NEW: Handle ValidationException
+    
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(
             ValidationException ex, WebRequest request) {
@@ -74,7 +73,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
     
-    // Handle Validation Errors (from @Valid annotation)
+   
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
@@ -95,7 +94,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
     
-    // Handle IllegalArgumentException
+   
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
             IllegalArgumentException ex, WebRequest request) {
@@ -110,7 +109,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
     
-    // Handle all other exceptions
+    
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(
             Exception ex, WebRequest request) {
@@ -125,7 +124,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
-    // Inner class for error response structure
+    
     public static class ErrorResponse {
         private int status;
         private String message;
@@ -138,8 +137,7 @@ public class GlobalExceptionHandler {
             this.timestamp = timestamp;
             this.path = path;
         }
-        
-        // Getters and Setters
+      
         public int getStatus() {
             return status;
         }

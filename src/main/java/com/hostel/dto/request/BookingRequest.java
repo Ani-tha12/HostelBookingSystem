@@ -28,10 +28,10 @@ public class BookingRequest {
     @Min(value = 1, message = "At least 1 bed must be booked")
     private Integer numberOfBeds;
     
-    // Constructors
+   
     public BookingRequest() {}
     
-    // Getters and Setters
+ 
     public Long getUserId() {
         return userId;
     }

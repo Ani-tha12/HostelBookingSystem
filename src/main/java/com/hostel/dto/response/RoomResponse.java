@@ -13,10 +13,10 @@ public class RoomResponse {
     private Double pricePerNight;
     private String description;
     
-    // Constructors
+  
     public RoomResponse() {}
     
-    // Getters and Setters
+    
     public Long getRoomId() {
         return roomId;
     }

@@ -24,12 +24,12 @@ public class HostelRequest {
     @Size(max = 1000, message = "Description cannot exceed 1000 characters")
     private String description;
     
-    private List<Long> facilityIds; // List of facility IDs to assign
+    private List<Long> facilityIds; 
     
-    // Constructors
+    
     public HostelRequest() {}
     
-    // Getters and Setters
+   
     public Long getOwnerId() {
         return ownerId;
     }

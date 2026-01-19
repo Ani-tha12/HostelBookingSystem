@@ -17,14 +17,14 @@ public class Facility {
     @ManyToMany(mappedBy = "facilities")
     private Set<Hostel> hostels;
     
-    // Constructors
+   
     public Facility() {}
     
     public Facility(String facilityName) {
         this.facilityName = facilityName;
     }
     
-    // Getters and Setters
+   
     public Long getFacilityId() {
         return facilityId;
     }

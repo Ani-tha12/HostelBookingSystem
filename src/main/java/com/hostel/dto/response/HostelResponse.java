@@ -16,10 +16,10 @@ public class HostelResponse {
     private String ownerName;
     private List<String> facilities;
     
-    // Constructors
+   
     public HostelResponse() {}
     
-    // Getters and Setters
+    
     public Long getHostelId() {
         return hostelId;
     }

@@ -23,7 +23,7 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
     
-    // POST: Create new booking (User only)
+    
     @PostMapping
     public ResponseEntity<ApiResponse<BookingResponse>> createBooking(
             @Valid @RequestBody BookingRequest request) {
@@ -32,14 +32,14 @@ public class BookingController {
             .body(ApiResponse.success("Booking created successfully", response));
     }
     
-    // GET: Get all bookings (Admin only)
+   
     @GetMapping
     public ResponseEntity<ApiResponse<List<BookingResponse>>> getAllBookings() {
         List<BookingResponse> bookings = bookingService.getAllBookings();
         return ResponseEntity.ok(ApiResponse.success("Bookings retrieved successfully", bookings));
     }
     
-    // GET: Get booking by ID
+    
     @GetMapping("/{bookingId}")
     public ResponseEntity<ApiResponse<BookingResponse>> getBookingById(
             @PathVariable Long bookingId) {
@@ -47,7 +47,7 @@ public class BookingController {
         return ResponseEntity.ok(ApiResponse.success("Booking retrieved successfully", response));
     }
     
-    // GET: Get bookings by user
+    
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponse<List<BookingResponse>>> getBookingsByUser(
             @PathVariable Long userId) {
@@ -57,7 +57,7 @@ public class BookingController {
         );
     }
     
-    // GET: Get bookings by hostel (Owner only)
+   
     @GetMapping("/hostel/{hostelId}")
     public ResponseEntity<ApiResponse<List<BookingResponse>>> getBookingsByHostel(
             @PathVariable Long hostelId) {
@@ -67,7 +67,6 @@ public class BookingController {
         );
     }
     
-    // GET: Get bookings by owner (Owner only)
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity<ApiResponse<List<BookingResponse>>> getBookingsByOwner(
             @PathVariable Long ownerId) {
@@ -77,7 +76,7 @@ public class BookingController {
         );
     }
     
-    // PUT: Cancel booking
+    
     @PutMapping("/{bookingId}/cancel")
     public ResponseEntity<ApiResponse<BookingResponse>> cancelBooking(
             @PathVariable Long bookingId,
@@ -88,7 +87,7 @@ public class BookingController {
         );
     }
     
-    // PUT: Update booking status (Owner/Admin only)
+   
     @PutMapping("/{bookingId}/status")
     public ResponseEntity<ApiResponse<BookingResponse>> updateBookingStatus(
             @PathVariable Long bookingId,
@@ -99,7 +98,7 @@ public class BookingController {
         );
     }
     
-    // GET: Get booking statistics (Admin only)
+    
     @GetMapping("/admin/statistics")
     public ResponseEntity<ApiResponse<BookingStatisticsResponse>> getStatistics() {
         BookingStatisticsResponse stats = bookingService.getStatistics();

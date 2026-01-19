@@ -9,10 +9,10 @@ public class FacilityRequest {
     @Size(min = 2, max = 50, message = "Facility name must be between 2 and 50 characters")
     private String facilityName;
     
-    // Constructors
+    
     public FacilityRequest() {}
     
-    // Getters and Setters
+    
     public String getFacilityName() {
         return facilityName;
     }

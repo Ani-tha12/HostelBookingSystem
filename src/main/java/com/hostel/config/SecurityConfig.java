@@ -101,7 +101,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
+             
                 .requestMatchers(
                     "/api/v1/users/register",
                     "/api/v1/users/login",
@@ -113,19 +113,19 @@ public class SecurityConfig {
                     "/api/v1/facilities"
                 ).permitAll()
 
-                // Admin-only endpoints
-                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+               
+                .requestMatchers("/api/v1/users/admin/**").hasRole("ADMIN")
 
-                // Owner/Admin endpoints
+                
                 .requestMatchers(
                     "/api/v1/hostels/add",
                     "/api/v1/rooms/add"
                 ).hasAnyRole("OWNER", "ADMIN")
 
-                // Booking endpoints (authenticated roles)
-                .requestMatchers("/api/v1/bookings/**").hasAnyRole("USER", "OWNER", "ADMIN")
+                
+                .requestMatchers("/api/v1/users/bookings/**").hasAnyRole("USER", "OWNER", "ADMIN")
 
-                // Everything else requires authentication
+               
                 .anyRequest().authenticated()
             )
             .sessionManagement(session ->

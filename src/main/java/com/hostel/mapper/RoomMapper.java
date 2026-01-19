@@ -13,7 +13,7 @@ public class RoomMapper {
         Room room = new Room();
         room.setRoomType(request.getRoomType());
         room.setTotalBeds(request.getTotalBeds());
-        room.setAvailableBeds(request.getTotalBeds()); // Initially all beds available
+        room.setAvailableBeds(request.getTotalBeds()); 
         room.setPricePerNight(request.getPricePerNight());
         room.setDescription(request.getDescription());
         return room;

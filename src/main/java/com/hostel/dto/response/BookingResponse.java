@@ -20,11 +20,10 @@ public class BookingResponse {
     private Double totalPrice;
     private BookingStatus bookingStatus;
     private LocalDateTime bookingDate;
-    
-    // Constructors
+   
     public BookingResponse() {}
     
-    // Getters and Setters
+ 
     public Long getBookingId() {
         return bookingId;
     }

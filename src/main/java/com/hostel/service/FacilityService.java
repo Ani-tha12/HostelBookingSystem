@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class FacilityService {
     
-    // ⭐ ADD THIS: Logger declaration
+ 
     private static final Logger logger = LoggerFactory.getLogger(FacilityService.class);
     
     @Autowired
@@ -31,22 +31,22 @@ public class FacilityService {
     @Autowired
     private FacilityMapper facilityMapper;
     
-    // Add new facility
+
     public FacilityResponse addFacility(FacilityRequest request) {
         logger.info("Adding new facility - Name: {}", request.getFacilityName());
         
         try {
-            // Check if facility already exists
+         
             if (facilityRepository.existsByFacilityName(request.getFacilityName())) {
                 logger.warn("Facility creation failed: Facility already exists - Name: {}", 
                            request.getFacilityName());
                 throw new BadRequestException("Facility already exists");
             }
             
-            // Create facility
+           
             Facility facility = facilityMapper.toEntity(request);
             
-            // Save facility
+            
             Facility savedFacility = facilityRepository.save(facility);
             
             logger.info("Facility created successfully - ID: {}, Name: {}", 
@@ -63,7 +63,7 @@ public class FacilityService {
         }
     }
     
-    // Get all facilities
+
     public List<FacilityResponse> getAllFacilities() {
         logger.info("Fetching all facilities");
         
@@ -75,7 +75,7 @@ public class FacilityService {
         return facilities;
     }
     
-    // Delete facility
+    
     public void deleteFacility(Long facilityId) {
         logger.info("Attempting to delete facility - ID: {}", facilityId);
         
@@ -85,7 +85,7 @@ public class FacilityService {
                 return new ResourceNotFoundException("Facility", "facilityId", facilityId);
             });
         
-        // Check if facility is assigned to any hostel
+      
         if (facility.getHostels() != null && !facility.getHostels().isEmpty()) {
             logger.warn("Facility deletion failed: Assigned to {} hostels - ID: {}", 
                        facility.getHostels().size(), facilityId);

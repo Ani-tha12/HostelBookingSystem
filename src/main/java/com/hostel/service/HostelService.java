@@ -27,8 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class HostelService {
-    
-    // ⭐ ADD THIS: Logger declaration
+  
     private static final Logger logger = LoggerFactory.getLogger(HostelService.class);
     
     @Autowired
@@ -43,13 +42,13 @@ public class HostelService {
     @Autowired
     private HostelMapper hostelMapper;
     
-    // Add new hostel
+  
     public HostelResponse addHostel(HostelRequest request) {
         logger.info("Adding new hostel - Name: {}, City: {}, Owner ID: {}", 
                    request.getHostelName(), request.getCity(), request.getOwnerId());
         
         try {
-            // Find owner
+           
             User owner = userRepository.findById(request.getOwnerId())
                 .orElseThrow(() -> {
                     logger.error("Hostel creation failed: Owner not found - ID: {}", request.getOwnerId());
@@ -59,14 +58,13 @@ public class HostelService {
             logger.debug("Owner validated - ID: {}, Name: {}, Role: {}", 
                         owner.getUserId(), owner.getName(), owner.getRole());
             
-            // Check if user is owner
+           
             if (owner.getRole().name().equals("OWNER") && !owner.getStatus().name().equals("APPROVED")) {
                 logger.warn("Hostel creation failed: Owner not approved - ID: {}, Status: {}", 
                            owner.getUserId(), owner.getStatus());
                 throw new BadRequestException("Owner account is not approved");
             }
-            
-            // Create hostel
+           
             Hostel hostel = hostelMapper.toEntity(request);
             hostel.setOwner(owner);
             hostel.setApproved(false);
@@ -74,7 +72,7 @@ public class HostelService {
             logger.debug("Hostel entity created - Name: {}, Approved: {}", 
                         hostel.getHostelName(), hostel.getApproved());
             
-            // Add facilities if provided
+            
             if (request.getFacilityIds() != null && !request.getFacilityIds().isEmpty()) {
                 Set<Facility> facilities = new HashSet<>();
                 for (Long facilityId : request.getFacilityIds()) {
@@ -89,7 +87,7 @@ public class HostelService {
                 logger.debug("Added {} facilities to hostel", facilities.size());
             }
             
-            // Save hostel
+          
             Hostel savedHostel = hostelRepository.save(hostel);
             
             logger.info("Hostel created successfully - ID: {}, Name: {}, Owner: {}, Requires approval", 
@@ -106,7 +104,7 @@ public class HostelService {
         }
     }
     
-    // Get all approved hostels
+   
     public List<HostelResponse> getApprovedHostels() {
         logger.info("Fetching all approved hostels");
         
@@ -118,7 +116,7 @@ public class HostelService {
         return hostels;
     }
     
-    // Search hostels by city
+   
     public List<HostelResponse> searchHostelsByCity(String city) {
         logger.info("Searching hostels in city: {}", city);
         
@@ -130,7 +128,7 @@ public class HostelService {
         return hostels;
     }
     
-    // Approve hostel
+    
     public HostelResponse approveHostel(Long hostelId) {
         logger.info("Attempting to approve hostel - ID: {}", hostelId);
         
@@ -149,7 +147,7 @@ public class HostelService {
         return hostelMapper.toResponse(updatedHostel);
     }
     
-    // Delete hostel
+   
     public void deleteHostel(Long hostelId) {
         logger.info("Attempting to delete hostel - ID: {}", hostelId);
         
@@ -159,7 +157,7 @@ public class HostelService {
                 return new ResourceNotFoundException("Hostel", "hostelId", hostelId);
             });
         
-        // Check if hostel has active bookings
+     
         if (hostel.getBookings() != null && !hostel.getBookings().isEmpty()) {
             logger.warn("Hostel deletion failed: Has {} active bookings - ID: {}", 
                        hostel.getBookings().size(), hostelId);
@@ -245,7 +243,7 @@ public class HostelService {
 		            .orElseThrow(() -> new ResourceNotFoundException("Hostel", "hostelId", hostelId));
 
 		    hostel.setApproved(false);
-		    // Optionally store rejection reason if you have a field for it
+		    
 		    hostelRepository.save(hostel);
 
 		

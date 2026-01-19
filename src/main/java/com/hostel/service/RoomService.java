@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class RoomService {
     
-    // ⭐ ADD THIS: Logger declaration
+  
     private static final Logger logger = LoggerFactory.getLogger(RoomService.class);
     
     @Autowired
@@ -36,14 +36,14 @@ public class RoomService {
     @Autowired
     private RoomMapper roomMapper;
     
-    // Add new room
+  
     public RoomResponse addRoom(RoomRequest request) {
         logger.info("Adding new room - Hostel ID: {}, Type: {}, Beds: {}, Price: {}", 
                    request.getHostelId(), request.getRoomType(), 
                    request.getTotalBeds(), request.getPricePerNight());
         
         try {
-            // Find hostel
+          
             Hostel hostel = hostelRepository.findById(request.getHostelId())
                 .orElseThrow(() -> {
                     logger.error("Room creation failed: Hostel not found - ID: {}", request.getHostelId());
@@ -53,18 +53,18 @@ public class RoomService {
             logger.debug("Hostel validated - ID: {}, Name: {}, Approved: {}", 
                         hostel.getHostelId(), hostel.getHostelName(), hostel.getApproved());
             
-            // Check if hostel is approved
+           
             if (!hostel.getApproved()) {
                 logger.warn("Room creation failed: Hostel not approved - Hostel ID: {}", 
                            request.getHostelId());
                 throw new BadRequestException("Cannot add room to unapproved hostel");
             }
             
-            // Create room
+           
             Room room = roomMapper.toEntity(request);
             room.setHostel(hostel);
             
-            // Save room
+           
             Room savedRoom = roomRepository.save(room);
             
             logger.info("Room created successfully - ID: {}, Hostel: {}, Type: {}, Beds: {}", 
@@ -82,7 +82,7 @@ public class RoomService {
         }
     }
     
-    // Get available rooms by hostel
+   
     public List<RoomResponse> getAvailableRoomsByHostel(Long hostelId) {
         logger.info("Fetching available rooms for hostel ID: {}", hostelId);
         
@@ -94,7 +94,7 @@ public class RoomService {
         return rooms;
     }
     
-    // Update room availability
+    
     public RoomResponse updateAvailability(Long roomId, Integer availableBeds) {
         logger.info("Updating room availability - Room ID: {}, New availability: {}", 
                    roomId, availableBeds);
@@ -107,7 +107,7 @@ public class RoomService {
         
         int previousAvailability = room.getAvailableBeds();
         
-        // Validate availability
+       
         if (availableBeds < 0 || availableBeds > room.getTotalBeds()) {
             logger.warn("Availability update failed: Invalid value - Room ID: {}, Value: {}, Total beds: {}", 
                        roomId, availableBeds, room.getTotalBeds());
@@ -123,7 +123,7 @@ public class RoomService {
         return roomMapper.toResponse(updatedRoom);
     }
     
-    // Check room availability for booking
+
     public boolean checkAvailability(Long roomId, Integer requiredBeds) {
         logger.debug("Checking room availability - Room ID: {}, Required beds: {}", 
                     roomId, requiredBeds);
@@ -142,7 +142,7 @@ public class RoomService {
         return available;
     }
 
-	// Get all rooms
+
 	public List<RoomResponse> getAllRooms() {
 	    logger.info("Fetching all rooms");
 	    return roomRepository.findAll().stream()
@@ -150,7 +150,7 @@ public class RoomService {
 	            .collect(Collectors.toList());
 	}
 
-	// Get room by ID
+
 	public RoomResponse getRoomById(Long roomId) {
 	    logger.info("Fetching room with ID: {}", roomId);
 	    Room room = roomRepository.findById(roomId)
@@ -158,7 +158,7 @@ public class RoomService {
 	    return roomMapper.toResponse(room);
 	}
 
-	// Get rooms by hostel
+
 	public List<RoomResponse> getRoomsByHostel(Long hostelId) {
 	    logger.info("Fetching rooms for hostel ID: {}", hostelId);
 	    List<RoomResponse> rooms = roomRepository.findByHostel_HostelId(hostelId).stream()
@@ -167,7 +167,6 @@ public class RoomService {
 	    return rooms;
 	}
 
-	// Get available rooms (all hostels)
 	public List<RoomResponse> getAvailableRooms() {
 	    logger.info("Fetching all available rooms");
 	    List<RoomResponse> rooms = roomRepository.findAll().stream()
@@ -177,13 +176,13 @@ public class RoomService {
 	    return rooms;
 	}
 
-	// Update room details
+
 	public RoomResponse updateRoom(Long roomId, RoomRequest request) {
 	    logger.info("Updating room with ID: {}", roomId);
 	    Room room = roomRepository.findById(roomId)
 	            .orElseThrow(() -> new ResourceNotFoundException("Room", "roomId", roomId));
 
-	    // Update fields
+	  
 	    room.setRoomType(request.getRoomType());
 	    room.setTotalBeds(request.getTotalBeds());
 	    room.setPricePerNight(request.getPricePerNight());
@@ -193,7 +192,6 @@ public class RoomService {
 	    return roomMapper.toResponse(updatedRoom);
 	}
 
-	// Delete room
 	public void deleteRoom(Long roomId) {
 	    logger.info("Deleting room with ID: {}", roomId);
 	    Room room = roomRepository.findById(roomId)

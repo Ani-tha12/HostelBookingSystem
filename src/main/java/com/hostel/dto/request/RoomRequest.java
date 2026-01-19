@@ -24,10 +24,10 @@ public class RoomRequest {
     
     private String description;
     
-    // Constructors
+   
     public RoomRequest() {}
     
-    // Getters and Setters
+    
     public Long getHostelId() {
         return hostelId;
     }

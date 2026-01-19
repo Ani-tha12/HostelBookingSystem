@@ -27,12 +27,12 @@ public class UserRequest {
     @NotNull(message = "Role is required")
     private UserRole role;
     
-    private String businessLicense; // Required only for OWNER role
+    private String businessLicense; 
     
-    // Constructors
+    
     public UserRequest() {}
     
-    // Getters and Setters
+   
     public String getName() {
         return name;
     }

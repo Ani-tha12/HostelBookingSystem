@@ -19,10 +19,9 @@ public class ResetPasswordRequest {
     @NotBlank(message = "Reset token is required")
     private String resetToken;
     
-    // Constructors
+  
     public ResetPasswordRequest() {}
     
-    // Getters and Setters
     public Long getUserId() {
         return userId;
     }

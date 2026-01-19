@@ -34,7 +34,7 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Booking> bookings;
     
-    // Constructors
+   
     public Room() {}
     
     public Room(Hostel hostel, RoomType roomType, Integer totalBeds, Double pricePerNight) {
@@ -45,7 +45,7 @@ public class Room {
         this.pricePerNight = pricePerNight;
     }
     
-    // Getters and Setters
+   
     public Long getRoomId() {
         return roomId;
     }

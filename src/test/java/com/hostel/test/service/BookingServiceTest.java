@@ -62,20 +62,19 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup test user
+        
         testUser = new User();
         testUser.setUserId(1L);
         testUser.setName("Suresh Kumar");
         testUser.setEmail("suresh@gmail.com");
         testUser.setRole(UserRole.USER);
 
-        // Setup test owner
         User testOwner = new User();
         testOwner.setUserId(5L);
         testOwner.setName("Raj Kumar");
         testOwner.setRole(UserRole.OWNER);
 
-        // Setup test hostel
+       
         testHostel = new Hostel();
         testHostel.setHostelId(1L);
         testHostel.setHostelName("Sunshine Hostel");
@@ -84,7 +83,7 @@ class BookingServiceTest {
         testHostel.setApproved(true);
         testHostel.setOwner(testOwner);
 
-        // Setup test room
+        
         testRoom = new Room();
         testRoom.setRoomId(10L);
         testRoom.setHostel(testHostel);
@@ -93,7 +92,7 @@ class BookingServiceTest {
         testRoom.setAvailableBeds(6);
         testRoom.setPricePerNight(300.0);
 
-        // Setup booking request
+       
         bookingRequest = new BookingRequest();
         bookingRequest.setUserId(1L);
         bookingRequest.setHostelId(1L);
@@ -102,7 +101,7 @@ class BookingServiceTest {
         bookingRequest.setCheckOutDate(LocalDate.now().plusDays(10));
         bookingRequest.setNumberOfBeds(2);
 
-        // Setup test booking
+      
         testBooking = new Booking();
         testBooking.setBookingId(101L);
         testBooking.setUser(testUser);
@@ -115,7 +114,7 @@ class BookingServiceTest {
         testBooking.setBookingStatus(BookingStatus.CONFIRMED);
         testBooking.setBookingDate(LocalDateTime.now());
 
-        // Setup booking response
+        
         bookingResponse = new BookingResponse();
         bookingResponse.setBookingId(101L);
         bookingResponse.setUserId(1L);
@@ -131,21 +130,19 @@ class BookingServiceTest {
         bookingResponse.setBookingStatus(BookingStatus.CONFIRMED);
     }
 
-    // ==========================================
-    // SUCCESS TEST CASES
-    // ==========================================
+   
 
     @Test
     @DisplayName("SUCCESS: Create Booking - Should create booking, compute price, reduce availability")
     void testCreateBooking_Success() {
-        // Arrange
+       
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
         when(hostelRepository.findById(1L)).thenReturn(Optional.of(testHostel));
         when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
         when(bookingRepository.findOverlappingBookings(anyLong(), any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(new ArrayList<>());
 
-        // Let service fill fields (user/hostel/room/price/status) on entity returned by mapper
+        
         when(bookingMapper.toEntity(any(BookingRequest.class))).thenAnswer(inv -> {
             Booking b = new Booking();
             b.setCheckInDate(bookingRequest.getCheckInDate());
@@ -154,7 +151,7 @@ class BookingServiceTest {
             return b;
         });
 
-        // Persist: set ID on saved booking
+       
         when(bookingRepository.save(any(Booking.class))).thenAnswer(inv -> {
             Booking b = inv.getArgument(0);
             b.setBookingId(101L);
@@ -164,15 +161,15 @@ class BookingServiceTest {
         when(roomRepository.save(any(Room.class))).thenAnswer(inv -> inv.getArgument(0));
         when(bookingMapper.toResponse(any(Booking.class))).thenReturn(bookingResponse);
 
-        // Act
+        
         BookingResponse result = bookingService.createBooking(bookingRequest);
 
-        // Assert
+       
         assertNotNull(result);
         assertEquals(101L, result.getBookingId());
         assertEquals(BookingStatus.CONFIRMED, result.getBookingStatus());
 
-        // Validate computed total price
+        
         ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);
         verify(bookingRepository).save(bookingCaptor.capture());
         Booking saved = bookingCaptor.getValue();
@@ -181,10 +178,10 @@ class BookingServiceTest {
         double expectedTotal = nights * testRoom.getPricePerNight() * bookingRequest.getNumberOfBeds();
         assertEquals(expectedTotal, saved.getTotalPrice(), 0.0001);
 
-        // Availability reduced: 6 - 2 = 4
+       
         assertEquals(4, testRoom.getAvailableBeds());
 
-        // Verify room availability saved before booking
+        
         InOrder inOrder = inOrder(roomRepository, bookingRepository);
         inOrder.verify(roomRepository).save(testRoom);
         inOrder.verify(bookingRepository).save(saved);
@@ -193,8 +190,8 @@ class BookingServiceTest {
     @Test
     @DisplayName("SUCCESS: Cancel Booking - Should cancel and restore room availability")
     void testCancelBooking_Success() {
-        // Arrange
-        testRoom.setAvailableBeds(4); // Already 2 beds booked
+        
+        testRoom.setAvailableBeds(4); 
         testBooking.setBookingStatus(BookingStatus.CONFIRMED);
 
         when(bookingRepository.findById(101L)).thenReturn(Optional.of(testBooking));
@@ -202,14 +199,13 @@ class BookingServiceTest {
         when(roomRepository.save(any(Room.class))).thenAnswer(inv -> inv.getArgument(0));
         when(bookingMapper.toResponse(any(Booking.class))).thenReturn(bookingResponse);
 
-        // Act
+        
         BookingResponse result = bookingService.cancelBooking(101L, "Changed plans");
 
-        // Assert
+      
         assertNotNull(result);
         assertEquals(BookingStatus.CANCELLED, testBooking.getBookingStatus());
-        assertEquals(6, testRoom.getAvailableBeds()); // 4 + 2 = 6 (restored)
-
+        assertEquals(6, testRoom.getAvailableBeds()); 
         verify(bookingRepository).findById(101L);
         verify(roomRepository).save(testRoom);
         verify(bookingRepository).save(testBooking);
@@ -327,9 +323,7 @@ class BookingServiceTest {
         assertEquals(20L, result.getCompleted());
     }
 
-    // ==========================================
-    // FAILURE TEST CASES
-    // ==========================================
+   
 
     @Test
     @DisplayName("FAILURE: Create Booking - User not found")
@@ -426,8 +420,8 @@ class BookingServiceTest {
     @Test
     @DisplayName("FAILURE: Create Booking - Not enough beds available")
     void testCreateBooking_NotEnoughBeds_ThrowsException() {
-        testRoom.setAvailableBeds(1); // Only 1 bed available
-        bookingRequest.setNumberOfBeds(3); // Request 3 beds
+        testRoom.setAvailableBeds(1); 
+        bookingRequest.setNumberOfBeds(3); 
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
         when(hostelRepository.findById(1L)).thenReturn(Optional.of(testHostel));
@@ -518,9 +512,7 @@ class BookingServiceTest {
         });
     }
 
-    // ==========================================
-    // UNEXPECTED EXCEPTION (wrap check)
-    // ==========================================
+   
     @Test
     @DisplayName("FAILURE: Create Booking - Unexpected exception is wrapped with 'Booking creation failed'")
     void testCreateBooking_UnexpectedExceptionWrapped() {
@@ -531,7 +523,7 @@ class BookingServiceTest {
                 .thenReturn(Collections.emptyList());
         when(bookingMapper.toEntity(any(BookingRequest.class))).thenReturn(new Booking());
 
-        // Simulate infra error during room save
+        
         when(roomRepository.save(any(Room.class))).thenThrow(new RuntimeException("DB down"));
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> bookingService.createBooking(bookingRequest));

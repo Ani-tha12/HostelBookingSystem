@@ -32,7 +32,7 @@ import com.hostel.repository.UserRepository;
 @Transactional
 public class BookingService {
     
-    // ⭐ ADD THIS: Logger declaration
+   
     private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
     
     @Autowired
@@ -51,27 +51,27 @@ public class BookingService {
     private BookingMapper bookingMapper;
    
     
-    // Create booking
+  
     public BookingResponse createBooking(BookingRequest request) {
         logger.info("Creating booking - User ID: {}, Hostel ID: {}, Room ID: {}", 
                    request.getUserId(), request.getHostelId(), request.getRoomId());
         
         try {
-            // Find user
+           
             User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> {
                     logger.error("Booking creation failed: User not found - ID: {}", request.getUserId());
                     return new ResourceNotFoundException("User", "userId", request.getUserId());
                 });
             
-            // Find hostel
+           
             Hostel hostel = hostelRepository.findById(request.getHostelId())
                 .orElseThrow(() -> {
                     logger.error("Booking creation failed: Hostel not found - ID: {}", request.getHostelId());
                     return new ResourceNotFoundException("Hostel", "hostelId", request.getHostelId());
                 });
             
-            // Find room
+           
             Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> {
                     logger.error("Booking creation failed: Room not found - ID: {}", request.getRoomId());
@@ -81,7 +81,7 @@ public class BookingService {
             logger.debug("Booking entities validated - User: {}, Hostel: {}, Room: {}", 
                         user.getEmail(), hostel.getHostelName(), room.getRoomId());
             
-            // Validate dates
+           
             if (request.getCheckInDate().isBefore(LocalDate.now())) {
                 logger.warn("Booking validation failed: Check-in date is in the past - {}", 
                            request.getCheckInDate());
@@ -94,25 +94,24 @@ public class BookingService {
                 throw new BadRequestException("Check-out date must be after check-in date");
             }
             
-            // Check if hostel is approved
             if (!hostel.getApproved()) {
                 logger.warn("Booking failed: Hostel not approved - ID: {}, Name: {}", 
                            hostel.getHostelId(), hostel.getHostelName());
                 throw new BadRequestException("Hostel is not approved for bookings");
             }
             
-            // Check room availability
             logger.debug("Checking room availability - Available: {}, Required: {}", 
                         room.getAvailableBeds(), request.getNumberOfBeds());
             
             if (room.getAvailableBeds() < request.getNumberOfBeds()) {
+
                 logger.warn("Booking failed: Insufficient beds - Available: {}, Required: {}", 
                            room.getAvailableBeds(), request.getNumberOfBeds());
                 throw new BadRequestException("Not enough beds available. Only " + 
                     room.getAvailableBeds() + " beds available");
             }
             
-            // Check for overlapping bookings
+           
             List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
                 request.getRoomId(), 
                 request.getCheckInDate(), 
@@ -125,7 +124,7 @@ public class BookingService {
                 throw new BadRequestException("Room is already booked for selected dates");
             }
             
-            // Calculate total price
+            
             long numberOfNights = ChronoUnit.DAYS.between(
                 request.getCheckInDate(), 
                 request.getCheckOutDate()
@@ -135,7 +134,7 @@ public class BookingService {
             logger.debug("Booking calculation - Nights: {}, Price per night: {}, Total beds: {}, Total price: {}", 
                         numberOfNights, room.getPricePerNight(), request.getNumberOfBeds(), totalPrice);
             
-            // Create booking
+            
             Booking booking = bookingMapper.toEntity(request);
             booking.setUser(user);
             booking.setHostel(hostel);
@@ -143,7 +142,7 @@ public class BookingService {
             booking.setTotalPrice(totalPrice);
             booking.setBookingStatus(BookingStatus.CONFIRMED);
             
-            // Update room availability
+           
             int previousAvailability = room.getAvailableBeds();
             room.setAvailableBeds(room.getAvailableBeds() - request.getNumberOfBeds());
             roomRepository.save(room);
@@ -151,7 +150,7 @@ public class BookingService {
             logger.debug("Room availability updated - Room ID: {}, Previous: {}, New: {}", 
                         room.getRoomId(), previousAvailability, room.getAvailableBeds());
             
-            // Save booking
+          
             Booking savedBooking = bookingRepository.save(booking);
             
             logger.info("Booking created successfully - Booking ID: {}, User: {}, Hostel: {}, Total Price: {}", 
@@ -168,7 +167,7 @@ public class BookingService {
         }
     }
     
-    // Cancel booking
+   
     public BookingResponse cancelBooking(Long bookingId, String reason) {
         logger.info("Attempting to cancel booking - ID: {}, Reason: {}", bookingId, reason);
         
@@ -178,7 +177,7 @@ public class BookingService {
                 return new ResourceNotFoundException("Booking", "bookingId", bookingId);
             });
         
-        // Check if booking can be cancelled
+        
         if (booking.getBookingStatus() == BookingStatus.COMPLETED) {
             logger.warn("Cancellation failed: Booking already completed - ID: {}", bookingId);
             throw new BadRequestException("Cannot cancel completed booking");
@@ -189,10 +188,10 @@ public class BookingService {
             throw new BadRequestException("Booking is already cancelled");
         }
         
-        // Update booking status
+       
         booking.setBookingStatus(BookingStatus.CANCELLED);
         
-        // Restore room availability
+        
         Room room = booking.getRoom();
         int previousAvailability = room.getAvailableBeds();
         room.setAvailableBeds(room.getAvailableBeds() + booking.getNumberOfBeds());

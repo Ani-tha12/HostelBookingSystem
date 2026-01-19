@@ -57,7 +57,7 @@ public class FacilityController {
         );
     }
     
-    // DELETE: Delete facility (Admin only)
+ 
     @DeleteMapping("/{facilityId}")
     public ResponseEntity<ApiResponse<String>> deleteFacility(@PathVariable Long facilityId) {
         facilityService.deleteFacility(facilityId);

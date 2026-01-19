@@ -12,7 +12,7 @@ public class LoginResponse {
     private String token;
     private LocalDateTime loginTime;
     
-    // Constructors
+   
     public LoginResponse() {
         this.loginTime = LocalDateTime.now();
     }
@@ -26,7 +26,7 @@ public class LoginResponse {
         this.loginTime = LocalDateTime.now();
     }
     
-    // Getters and Setters
+    
     public Long getUserId() {
         return userId;
     }

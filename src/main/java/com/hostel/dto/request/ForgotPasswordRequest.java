@@ -12,10 +12,10 @@ public class ForgotPasswordRequest {
     @NotBlank(message = "Username is required")
     private String username;
     
-    // Constructors
+   
     public ForgotPasswordRequest() {}
     
-    // Getters and Setters
+    
     public String getEmail() {
         return email;
     }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.data.repository.query.Param;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     
@@ -52,12 +52,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
   
     @Query("SELECT COUNT(b) FROM Booking b")
     Long countTotalBookings();
-    
-   
-    Long countByBookingStatus(BookingStatus status);
+
+
+     Long countByBookingStatus(BookingStatus status);
 
 
 	//Optional<User> findByHostel_Owner_UserId(Long ownerId);
 	
 	List<Booking> findByHostel_Owner_UserId(Long ownerId);
+
+
+	
 }

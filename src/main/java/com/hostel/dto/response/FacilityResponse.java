@@ -5,7 +5,7 @@ public class FacilityResponse {
     private Long facilityId;
     private String facilityName;
     
-    // Constructors
+    
     public FacilityResponse() {}
     
     public FacilityResponse(Long facilityId, String facilityName) {
@@ -13,7 +13,7 @@ public class FacilityResponse {
         this.facilityName = facilityName;
     }
     
-    // Getters and Setters
+   
     public Long getFacilityId() {
         return facilityId;
     }

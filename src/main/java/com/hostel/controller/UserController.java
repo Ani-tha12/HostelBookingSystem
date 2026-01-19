@@ -34,7 +34,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    // POST: Register new user
+    
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponse>> registerUser(
             @Valid @RequestBody UserRequest request) {
@@ -43,7 +43,7 @@ public class UserController {
             .body(ApiResponse.success("User registered successfully", response));
     }
     
-    // POST: User login
+    
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(
             @Valid @RequestBody LoginRequest request) {
@@ -51,21 +51,21 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("Login successful", response));
     }
     
-    // GET: Get user by ID
+   
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable Long userId) {
         UserResponse response = userService.getUserById(userId);
         return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", response));
     }
     
-    // GET: Get all users (Admin only)
+    
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
         List<UserResponse> users = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
     }
     
-    // GET: Get users by role (Admin only)
+    
     @GetMapping("/role/{role}")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getUsersByRole(
             @PathVariable UserRole role) {
@@ -73,7 +73,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
     }
     
-    // PUT: Update user profile
+   
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(
             @PathVariable Long userId,
@@ -82,7 +82,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("User updated successfully", response));
     }
     
-    // PUT: Change password
+    
     @PutMapping("/{userId}/change-password")
     public ResponseEntity<ApiResponse<String>> changePassword(
             @PathVariable Long userId,
@@ -92,16 +92,14 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("Password changed successfully", null));
     }
     
-    // DELETE: Delete user account
+  
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
     }
     
-    // ========== ADMIN ENDPOINTS ==========
-    
-    // GET: Get pending owner approvals (Admin only)
+   
     @GetMapping("/admin/owners/pending")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getPendingOwners() {
         List<UserResponse> pendingOwners = userService.getPendingOwners();
@@ -110,14 +108,14 @@ public class UserController {
         );
     }
     
-    // PUT: Approve owner (Admin only)
+   
     @PutMapping("/admin/owners/{userId}/approve")
     public ResponseEntity<ApiResponse<UserResponse>> approveOwner(@PathVariable Long userId) {
         UserResponse response = userService.approveOwner(userId);
         return ResponseEntity.ok(ApiResponse.success("Owner approved successfully", response));
     }
     
-    // PUT: Reject owner (Admin only)
+   
     @PutMapping("/admin/owners/{userId}/reject")
     public ResponseEntity<ApiResponse<UserResponse>> rejectOwner(
             @PathVariable Long userId,
@@ -126,7 +124,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("Owner rejected", response));
     }
     
-    // PUT: Update user role (Admin only)
+    
     @PutMapping("/admin/{userId}/role")
     public ResponseEntity<ApiResponse<UserResponse>> updateUserRole(
             @PathVariable Long userId,
