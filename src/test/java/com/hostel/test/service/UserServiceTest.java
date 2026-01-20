@@ -36,538 +36,497 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("User Service Tests")
 class UserServiceTest {
-    
-    @Mock
-    private UserRepository userRepository;
-    
-    @Mock
-    private UserMapper userMapper;
-    
-    @Mock
-    private PasswordEncoder passwordEncoder;
-    
-    @Mock
-    private JwtService jwtService;
-    
-    @InjectMocks
-    private UserService userService;
-    
-    private User testUser;
-    private User testOwner;
-    private UserRequest userRequest;
-    private UserResponse userResponse;
-    
-    @BeforeEach
-    void setUp() {
-        
-        testUser = new User();
-        testUser.setUserId(1L);
-        testUser.setName("Suresh Kumar");
-        testUser.setEmail("suresh@gmail.com");
-        testUser.setPhone("9876543210");
-        testUser.setPassword("encodedPassword");
-        testUser.setRole(UserRole.USER);
-        testUser.setStatus(UserStatus.ACTIVE);
-        testUser.setBookings(new ArrayList<>());
-        
-      
-        testOwner = new User();
-        testOwner.setUserId(10L);
-        testOwner.setName("Raj Kumar");
-        testOwner.setEmail("raj@gmail.com");
-        testOwner.setPhone("9988776655");
-        testOwner.setPassword("encodedPassword");
-        testOwner.setRole(UserRole.OWNER);
-        testOwner.setStatus(UserStatus.PENDING);
-        testOwner.setBookings(new ArrayList<>());
-        
-       
-        userRequest = new UserRequest();
-        userRequest.setName("Suresh Kumar");
-        userRequest.setEmail("suresh@gmail.com");
-        userRequest.setPhone("9876543210");
-        userRequest.setPassword("securePassword123");
-        userRequest.setRole(UserRole.USER);
-       
-        userResponse = new UserResponse();
-        userResponse.setUserId(1L);
-        userResponse.setName("Suresh Kumar");
-        userResponse.setEmail("suresh@gmail.com");
-        userResponse.setRole(UserRole.USER);
-        userResponse.setStatus(UserStatus.ACTIVE);
-    }
-    
-   
-    
-    @Test
-    @DisplayName("SUCCESS: Register User - Should create user with ACTIVE status")
-    void testRegisterUser_Success() {
-        
-        when(userRepository.existsByEmail(anyString())).thenReturn(false);
-        when(userMapper.toEntity(any(UserRequest.class))).thenReturn(testUser);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-        when(userRepository.save(any(User.class))).thenReturn(testUser);
-        when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
-        
-       
-        UserResponse result = userService.registerUser(userRequest);
-        
-        
-        assertNotNull(result);
-        assertEquals("suresh@gmail.com", result.getEmail());
-        assertEquals(UserRole.USER, result.getRole());
-        assertEquals(UserStatus.ACTIVE, result.getStatus());
-        
-        verify(userRepository, times(1)).existsByEmail("suresh@gmail.com");
-        verify(passwordEncoder, times(1)).encode("securePassword123");
-        verify(userRepository, times(1)).save(any(User.class));
-        verify(userMapper, times(1)).toResponse(testUser);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Register Owner - Should create owner with PENDING status")
-    void testRegisterOwner_Success() {
-        
-        UserRequest ownerRequest = new UserRequest();
-        ownerRequest.setName("Raj Kumar");
-        ownerRequest.setEmail("raj@gmail.com");
-        ownerRequest.setPassword("ownerPass123");
-        ownerRequest.setRole(UserRole.OWNER);
-        
-        UserResponse ownerResponse = new UserResponse();
-        ownerResponse.setUserId(10L);
-        ownerResponse.setEmail("raj@gmail.com");
-        ownerResponse.setRole(UserRole.OWNER);
-        ownerResponse.setStatus(UserStatus.PENDING);
-        
-        when(userRepository.existsByEmail(anyString())).thenReturn(false);
-        when(userMapper.toEntity(any(UserRequest.class))).thenReturn(testOwner);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-        when(userRepository.save(any(User.class))).thenReturn(testOwner);
-        when(userMapper.toResponse(any(User.class))).thenReturn(ownerResponse);
-        
-      
-        UserResponse result = userService.registerUser(ownerRequest);
-        
-        assertNotNull(result);
-        assertEquals(UserRole.OWNER, result.getRole());
-        assertEquals(UserStatus.PENDING, result.getStatus());
-        
-        verify(userRepository, times(1)).save(any(User.class));
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Login - Should return JWT token and user details")
-    void testLogin_Success() {
-       
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("suresh@gmail.com");
-        loginRequest.setPassword("securePassword123");
-        
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(testUser));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
-        when(jwtService.generateToken(anyString(), anyString())).thenReturn("jwt-token-123");
-        
-       
-        LoginResponse result = userService.login(loginRequest);
-        
-       
-        assertNotNull(result);
-        assertEquals(1L, result.getUserId());
-        assertEquals("Suresh Kumar", result.getName());
-        assertEquals("suresh@gmail.com", result.getEmail());
-        assertEquals(UserRole.USER, result.getRole());
-        assertEquals("jwt-token-123", result.getToken());
-        
-        verify(jwtService, times(1)).generateToken("suresh@gmail.com", "USER");
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get User By ID - Should return user response")
-    void testGetUserById_Success() {
-       
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
-        
-        
-        UserResponse result = userService.getUserById(1L);
-        
-        
-        assertNotNull(result);
-        assertEquals(1L, result.getUserId());
-        assertEquals("suresh@gmail.com", result.getEmail());
-        
-        verify(userRepository, times(1)).findById(1L);
-        verify(userMapper, times(1)).toResponse(testUser);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get All Users - Should return list of users")
-    void testGetAllUsers_Success() {
-      
-        List<User> users = Arrays.asList(testUser, testOwner);
-        List<UserResponse> responses = Arrays.asList(userResponse, new UserResponse());
-        
-        when(userRepository.findAll()).thenReturn(users);
-        when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
-        
-        
-        List<UserResponse> result = userService.getAllUsers();
-        
-        
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        
-        verify(userRepository, times(1)).findAll();
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Approve Owner - Should change status to APPROVED")
-    void testApproveOwner_Success() {
-      
-        UserResponse approvedResponse = new UserResponse();
-        approvedResponse.setUserId(10L);
-        approvedResponse.setStatus(UserStatus.APPROVED);
-        
-        when(userRepository.findById(10L)).thenReturn(Optional.of(testOwner));
-        when(userRepository.save(any(User.class))).thenReturn(testOwner);
-        when(userMapper.toResponse(any(User.class))).thenReturn(approvedResponse);
-        
-       
-        UserResponse result = userService.approveOwner(10L);
-        
-       
-        assertNotNull(result);
-        assertEquals(UserStatus.APPROVED, testOwner.getStatus());
-        
-        verify(userRepository, times(1)).save(testOwner);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get Users By Role - Should return users with specific role")
-    void testGetUsersByRole_Success() {
-       
-        List<User> users = Arrays.asList(testUser);
-        when(userRepository.findAll()).thenReturn(users);
-        when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
-        
-     
-        List<UserResponse> result = userService.getUsersByRole(UserRole.USER);
-        
-      
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        
-        verify(userRepository, times(1)).findAll();
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Update User - Should update user details")
-    void testUpdateUser_Success() {
-       
-        UserRequest updateRequest = new UserRequest();
-        updateRequest.setName("Suresh Kumar Updated");
-        updateRequest.setEmail("suresh.new@gmail.com");
-        updateRequest.setRole(UserRole.USER);
-        
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        when(userRepository.save(any(User.class))).thenReturn(testUser);
-        when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
-        
-       
-        UserResponse result = userService.updateUser(1L, updateRequest);
-        
-       
-        assertNotNull(result);
-        verify(userRepository, times(1)).save(testUser);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get Pending Owners - Should return pending owners")
-    void testGetPendingOwners_Success() {
-        
-        List<User> allUsers = Arrays.asList(testUser, testOwner);
-        when(userRepository.findAll()).thenReturn(allUsers);
-        when(userMapper.toResponse(testOwner)).thenReturn(new UserResponse());
-        
-        
-        List<UserResponse> result = userService.getPendingOwners();
-        
-       
-        assertNotNull(result);
-        assertEquals(1, result.size());
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Reject Owner - Should set status to REJECTED")
-    void testRejectOwner_Success() {
-      
-        when(userRepository.findById(10L)).thenReturn(Optional.of(testOwner));
-        when(userRepository.save(any(User.class))).thenReturn(testOwner);
-        when(userMapper.toResponse(any(User.class))).thenReturn(new UserResponse());
-        
-        UserResponse result = userService.rejectOwner(10L, "Invalid documents");
-        
-      
-        assertNotNull(result);
-        assertEquals(UserStatus.REJECTED, testOwner.getStatus());
-        
-        verify(userRepository, times(1)).save(testOwner);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Update User Role - Should update role and set appropriate status")
-    void testUpdateUserRole_Success() {
-       
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        when(userRepository.save(any(User.class))).thenReturn(testUser);
-        when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
-        
-      
-        UserResponse result = userService.updateUserRole(1L, UserRole.OWNER);
-        
-        
-        assertNotNull(result);
-        assertEquals(UserRole.OWNER, testUser.getRole());
-        assertEquals(UserStatus.PENDING, testUser.getStatus());
-        
-        verify(userRepository, times(1)).save(testUser);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Change Password - Should update password")
-    void testChangePassword_Success() {
-        
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
-        when(passwordEncoder.encode(anyString())).thenReturn("newEncodedPassword");
-        when(userRepository.save(any(User.class))).thenReturn(testUser);
-        
-      
-        userService.changePassword(1L, "oldPassword", "newPassword");
-        
-        verify(passwordEncoder, times(1)).encode("newPassword");
-        verify(userRepository, times(1)).save(testUser);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Delete User - Should delete user without bookings")
-    void testDeleteUser_Success() {
-        
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        doNothing().when(userRepository).delete(any(User.class));
-        
-       
-        userService.deleteUser(1L);
-        
-        
-        verify(userRepository, times(1)).delete(testUser);
-    }
-    
-   
-    @Test
-    @DisplayName("FAILURE: Register User - Email already exists")
-    void testRegisterUser_EmailExists_ThrowsException() {
-        
-        when(userRepository.existsByEmail(anyString())).thenReturn(true);
-        
-       
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            userService.registerUser(userRequest);
-        });
-        
-        assertEquals("Email already exists", exception.getMessage());
-        verify(userRepository, never()).save(any(User.class));
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Login - User not found")
-    void testLogin_UserNotFound_ThrowsException() {
-       
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("nonexistent@gmail.com");
-        loginRequest.setPassword("password");
-        
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        
-        
-        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
-            userService.login(loginRequest);
-        });
-        
-        assertEquals("Invalid email or password", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Login - Invalid password")
-    void testLogin_InvalidPassword_ThrowsException() {
-       
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("suresh@gmail.com");
-        loginRequest.setPassword("wrongPassword");
-        
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(testUser));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
-        
-        
-        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
-            userService.login(loginRequest);
-        });
-        
-        assertEquals("Invalid email or password", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Login - User status not active")
-    void testLogin_UserNotActive_ThrowsException() {
-        
-        testUser.setStatus(UserStatus.PENDING);
-        
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("suresh@gmail.com");
-        loginRequest.setPassword("password");
-        
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(testUser));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
-        
-        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
-            userService.login(loginRequest);
-        });
-        
-        assertTrue(exception.getMessage().contains("Account is not active"));
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Get User By ID - User not found")
-    void testGetUserById_NotFound_ThrowsException() {
-       
-        when(userRepository.findById(999L)).thenReturn(Optional.empty());
-        
-      
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
-            userService.getUserById(999L);
-        });
-        
-        assertTrue(exception.getMessage().contains("User"));
-        assertTrue(exception.getMessage().contains("999"));
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Approve Owner - User not found")
-    void testApproveOwner_UserNotFound_ThrowsException() {
-       
-        when(userRepository.findById(999L)).thenReturn(Optional.empty());
-        
-        
-        assertThrows(ResourceNotFoundException.class, () -> {
-            userService.approveOwner(999L);
-        });
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Approve Owner - User is not owner")
-    void testApproveOwner_NotOwner_ThrowsException() {
-      
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser)); // testUser is USER, not OWNER
-        
-        
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            userService.approveOwner(1L);
-        });
-        
-        assertEquals("User is not an owner", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Update User - User not found")
-    void testUpdateUser_NotFound_ThrowsException() {
-      
-        when(userRepository.findById(999L)).thenReturn(Optional.empty());
-        
-       
-        assertThrows(ResourceNotFoundException.class, () -> {
-            userService.updateUser(999L, userRequest);
-        });
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Reject Owner - User is not owner")
-    void testRejectOwner_NotOwner_ThrowsException() {
-      
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        
-      
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            userService.rejectOwner(1L, "reason");
-        });
-        
-        assertEquals("User is not an owner", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Update User Role - User not found")
-    void testUpdateUserRole_NotFound_ThrowsException() {
-     
-        when(userRepository.findById(999L)).thenReturn(Optional.empty());
-        
-       
-        assertThrows(ResourceNotFoundException.class, () -> {
-            userService.updateUserRole(999L, UserRole.OWNER);
-        });
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Change Password - User not found")
-    void testChangePassword_UserNotFound_ThrowsException() {
-     
-        when(userRepository.findById(999L)).thenReturn(Optional.empty());
-        
-        
-        assertThrows(ResourceNotFoundException.class, () -> {
-            userService.changePassword(999L, "old", "new");
-        });
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Change Password - Incorrect current password")
-    void testChangePassword_WrongPassword_ThrowsException() {
-        
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
-        
-        
-        UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
-            userService.changePassword(1L, "wrongPassword", "newPassword");
-        });
-        
-        assertEquals("Current password is incorrect", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Delete User - User not found")
-    void testDeleteUser_NotFound_ThrowsException() {
-       
-        when(userRepository.findById(999L)).thenReturn(Optional.empty());
-        
-      
-        assertThrows(ResourceNotFoundException.class, () -> {
-            userService.deleteUser(999L);
-        });
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Delete User - Has active bookings")
-    void testDeleteUser_HasBookings_ThrowsException() {
-       
-        testUser.setBookings(Arrays.asList(new com.hostel.entity.Booking())); 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        
-      
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            userService.deleteUser(1L);
-        });
-        
-        assertEquals("Cannot delete user with active bookings", exception.getMessage());
-        verify(userRepository, never()).delete(any(User.class));
-    }
+
+	@Mock
+	private UserRepository userRepository;
+
+	@Mock
+	private UserMapper userMapper;
+
+	@Mock
+	private PasswordEncoder passwordEncoder;
+
+	@Mock
+	private JwtService jwtService;
+
+	@InjectMocks
+	private UserService userService;
+
+	private User testUser;
+	private User testOwner;
+	private UserRequest userRequest;
+	private UserResponse userResponse;
+
+	@BeforeEach
+	void setUp() {
+
+		testUser = new User();
+		testUser.setUserId(1L);
+		testUser.setName("Suresh Kumar");
+		testUser.setEmail("suresh@gmail.com");
+		testUser.setPhone("9876543210");
+		testUser.setPassword("encodedPassword");
+		testUser.setRole(UserRole.USER);
+		testUser.setStatus(UserStatus.ACTIVE);
+		testUser.setBookings(new ArrayList<>());
+
+		testOwner = new User();
+		testOwner.setUserId(10L);
+		testOwner.setName("Raj Kumar");
+		testOwner.setEmail("raj@gmail.com");
+		testOwner.setPhone("9988776655");
+		testOwner.setPassword("encodedPassword");
+		testOwner.setRole(UserRole.OWNER);
+		testOwner.setStatus(UserStatus.PENDING);
+		testOwner.setBookings(new ArrayList<>());
+
+		userRequest = new UserRequest();
+		userRequest.setName("Suresh Kumar");
+		userRequest.setEmail("suresh@gmail.com");
+		userRequest.setPhone("9876543210");
+		userRequest.setPassword("securePassword123");
+		userRequest.setRole(UserRole.USER);
+
+		userResponse = new UserResponse();
+		userResponse.setUserId(1L);
+		userResponse.setName("Suresh Kumar");
+		userResponse.setEmail("suresh@gmail.com");
+		userResponse.setRole(UserRole.USER);
+		userResponse.setStatus(UserStatus.ACTIVE);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Register User - Should create user with ACTIVE status")
+	void testRegisterUser_Success() {
+
+		when(userRepository.existsByEmail(anyString())).thenReturn(false);
+		when(userMapper.toEntity(any(UserRequest.class))).thenReturn(testUser);
+		when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+		when(userRepository.save(any(User.class))).thenReturn(testUser);
+		when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
+
+		UserResponse result = userService.registerUser(userRequest);
+
+		assertNotNull(result);
+		assertEquals("suresh@gmail.com", result.getEmail());
+		assertEquals(UserRole.USER, result.getRole());
+		assertEquals(UserStatus.ACTIVE, result.getStatus());
+
+		verify(userRepository, times(1)).existsByEmail("suresh@gmail.com");
+		verify(passwordEncoder, times(1)).encode("securePassword123");
+		verify(userRepository, times(1)).save(any(User.class));
+		verify(userMapper, times(1)).toResponse(testUser);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Register Owner - Should create owner with PENDING status")
+	void testRegisterOwner_Success() {
+
+		UserRequest ownerRequest = new UserRequest();
+		ownerRequest.setName("Raj Kumar");
+		ownerRequest.setEmail("raj@gmail.com");
+		ownerRequest.setPassword("ownerPass123");
+		ownerRequest.setRole(UserRole.OWNER);
+
+		UserResponse ownerResponse = new UserResponse();
+		ownerResponse.setUserId(10L);
+		ownerResponse.setEmail("raj@gmail.com");
+		ownerResponse.setRole(UserRole.OWNER);
+		ownerResponse.setStatus(UserStatus.PENDING);
+
+		when(userRepository.existsByEmail(anyString())).thenReturn(false);
+		when(userMapper.toEntity(any(UserRequest.class))).thenReturn(testOwner);
+		when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+		when(userRepository.save(any(User.class))).thenReturn(testOwner);
+		when(userMapper.toResponse(any(User.class))).thenReturn(ownerResponse);
+
+		UserResponse result = userService.registerUser(ownerRequest);
+
+		assertNotNull(result);
+		assertEquals(UserRole.OWNER, result.getRole());
+		assertEquals(UserStatus.PENDING, result.getStatus());
+
+		verify(userRepository, times(1)).save(any(User.class));
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Login - Should return JWT token and user details")
+	void testLogin_Success() {
+
+		LoginRequest loginRequest = new LoginRequest();
+		loginRequest.setEmail("suresh@gmail.com");
+		loginRequest.setPassword("securePassword123");
+
+		when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(testUser));
+		when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+		when(jwtService.generateToken(anyString(), anyString())).thenReturn("jwt-token-123");
+
+		LoginResponse result = userService.login(loginRequest);
+
+		assertNotNull(result);
+		assertEquals(1L, result.getUserId());
+		assertEquals("Suresh Kumar", result.getName());
+		assertEquals("suresh@gmail.com", result.getEmail());
+		assertEquals(UserRole.USER, result.getRole());
+		assertEquals("jwt-token-123", result.getToken());
+
+		verify(jwtService, times(1)).generateToken("suresh@gmail.com", "USER");
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get User By ID - Should return user response")
+	void testGetUserById_Success() {
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+		when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
+
+		UserResponse result = userService.getUserById(1L);
+
+		assertNotNull(result);
+		assertEquals(1L, result.getUserId());
+		assertEquals("suresh@gmail.com", result.getEmail());
+
+		verify(userRepository, times(1)).findById(1L);
+		verify(userMapper, times(1)).toResponse(testUser);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get All Users - Should return list of users")
+	void testGetAllUsers_Success() {
+
+		List<User> users = Arrays.asList(testUser, testOwner);
+		List<UserResponse> responses = Arrays.asList(userResponse, new UserResponse());
+
+		when(userRepository.findAll()).thenReturn(users);
+		when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
+
+		List<UserResponse> result = userService.getAllUsers();
+
+		assertNotNull(result);
+		assertEquals(2, result.size());
+
+		verify(userRepository, times(1)).findAll();
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Approve Owner - Should change status to APPROVED")
+	void testApproveOwner_Success() {
+
+		UserResponse approvedResponse = new UserResponse();
+		approvedResponse.setUserId(10L);
+		approvedResponse.setStatus(UserStatus.APPROVED);
+
+		when(userRepository.findById(10L)).thenReturn(Optional.of(testOwner));
+		when(userRepository.save(any(User.class))).thenReturn(testOwner);
+		when(userMapper.toResponse(any(User.class))).thenReturn(approvedResponse);
+
+		UserResponse result = userService.approveOwner(10L);
+
+		assertNotNull(result);
+		assertEquals(UserStatus.APPROVED, testOwner.getStatus());
+
+		verify(userRepository, times(1)).save(testOwner);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get Users By Role - Should return users with specific role")
+	void testGetUsersByRole_Success() {
+
+		List<User> users = Arrays.asList(testUser);
+		when(userRepository.findAll()).thenReturn(users);
+		when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
+
+		List<UserResponse> result = userService.getUsersByRole(UserRole.USER);
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+
+		verify(userRepository, times(1)).findAll();
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Update User - Should update user details")
+	void testUpdateUser_Success() {
+
+		UserRequest updateRequest = new UserRequest();
+		updateRequest.setName("Suresh Kumar Updated");
+		updateRequest.setEmail("suresh.new@gmail.com");
+		updateRequest.setRole(UserRole.USER);
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+		when(userRepository.save(any(User.class))).thenReturn(testUser);
+		when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
+
+		UserResponse result = userService.updateUser(1L, updateRequest);
+
+		assertNotNull(result);
+		verify(userRepository, times(1)).save(testUser);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get Pending Owners - Should return pending owners")
+	void testGetPendingOwners_Success() {
+
+		List<User> allUsers = Arrays.asList(testUser, testOwner);
+		when(userRepository.findAll()).thenReturn(allUsers);
+		when(userMapper.toResponse(testOwner)).thenReturn(new UserResponse());
+
+		List<UserResponse> result = userService.getPendingOwners();
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Reject Owner - Should set status to REJECTED")
+	void testRejectOwner_Success() {
+
+		when(userRepository.findById(10L)).thenReturn(Optional.of(testOwner));
+		when(userRepository.save(any(User.class))).thenReturn(testOwner);
+		when(userMapper.toResponse(any(User.class))).thenReturn(new UserResponse());
+
+		UserResponse result = userService.rejectOwner(10L, "Invalid documents");
+
+		assertNotNull(result);
+		assertEquals(UserStatus.REJECTED, testOwner.getStatus());
+
+		verify(userRepository, times(1)).save(testOwner);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Update User Role - Should update role and set appropriate status")
+	void testUpdateUserRole_Success() {
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+		when(userRepository.save(any(User.class))).thenReturn(testUser);
+		when(userMapper.toResponse(any(User.class))).thenReturn(userResponse);
+
+		UserResponse result = userService.updateUserRole(1L, UserRole.OWNER);
+
+		assertNotNull(result);
+		assertEquals(UserRole.OWNER, testUser.getRole());
+		assertEquals(UserStatus.PENDING, testUser.getStatus());
+
+		verify(userRepository, times(1)).save(testUser);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Change Password - Should update password")
+	void testChangePassword_Success() {
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+		when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+		when(passwordEncoder.encode(anyString())).thenReturn("newEncodedPassword");
+		when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+		userService.changePassword(1L, "oldPassword", "newPassword");
+
+		verify(passwordEncoder, times(1)).encode("newPassword");
+		verify(userRepository, times(1)).save(testUser);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Delete User - Should delete user without bookings")
+	void testDeleteUser_Success() {
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+		doNothing().when(userRepository).delete(any(User.class));
+
+		userService.deleteUser(1L);
+
+		verify(userRepository, times(1)).delete(testUser);
+	}
+
+	@Test
+	@DisplayName("FAILURE: Register User - Email already exists")
+	void testRegisterUser_EmailExists_ThrowsException() {
+
+		when(userRepository.existsByEmail(anyString())).thenReturn(true);
+
+		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+			userService.registerUser(userRequest);
+		});
+
+		assertEquals("Email already exists", exception.getMessage());
+		verify(userRepository, never()).save(any(User.class));
+	}
+
+	@Test
+	@DisplayName("FAILURE: Login - User not found")
+	void testLogin_UserNotFound_ThrowsException() {
+
+		LoginRequest loginRequest = new LoginRequest();
+		loginRequest.setEmail("nonexistent@gmail.com");
+		loginRequest.setPassword("password");
+
+		when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+		UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
+			userService.login(loginRequest);
+		});
+
+		assertEquals("Invalid email or password", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Login - Invalid password")
+	void testLogin_InvalidPassword_ThrowsException() {
+
+		LoginRequest loginRequest = new LoginRequest();
+		loginRequest.setEmail("suresh@gmail.com");
+		loginRequest.setPassword("wrongPassword");
+
+		when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(testUser));
+		when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
+
+		UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
+			userService.login(loginRequest);
+		});
+
+		assertEquals("Invalid email or password", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Login - User status not active")
+	void testLogin_UserNotActive_ThrowsException() {
+
+		testUser.setStatus(UserStatus.PENDING);
+
+		LoginRequest loginRequest = new LoginRequest();
+		loginRequest.setEmail("suresh@gmail.com");
+		loginRequest.setPassword("password");
+
+		when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(testUser));
+		when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+
+		UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
+			userService.login(loginRequest);
+		});
+
+		assertTrue(exception.getMessage().contains("Account is not active"));
+	}
+
+	@Test
+	@DisplayName("FAILURE: Get User By ID - User not found")
+	void testGetUserById_NotFound_ThrowsException() {
+
+		when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			userService.getUserById(999L);
+		});
+
+		assertTrue(exception.getMessage().contains("User"));
+		assertTrue(exception.getMessage().contains("999"));
+	}
+
+	@Test
+	@DisplayName("FAILURE: Approve Owner - User not found")
+	void testApproveOwner_UserNotFound_ThrowsException() {
+
+		when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			userService.approveOwner(999L);
+		});
+	}
+
+	@Test
+	@DisplayName("FAILURE: Approve Owner - User is not owner")
+	void testApproveOwner_NotOwner_ThrowsException() {
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser)); // testUser is USER, not OWNER
+
+		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+			userService.approveOwner(1L);
+		});
+
+		assertEquals("User is not an owner", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Update User - User not found")
+	void testUpdateUser_NotFound_ThrowsException() {
+
+		when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			userService.updateUser(999L, userRequest);
+		});
+	}
+
+	@Test
+	@DisplayName("FAILURE: Reject Owner - User is not owner")
+	void testRejectOwner_NotOwner_ThrowsException() {
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+
+		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+			userService.rejectOwner(1L, "reason");
+		});
+
+		assertEquals("User is not an owner", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Update User Role - User not found")
+	void testUpdateUserRole_NotFound_ThrowsException() {
+
+		when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			userService.updateUserRole(999L, UserRole.OWNER);
+		});
+	}
+
+	@Test
+	@DisplayName("FAILURE: Change Password - User not found")
+	void testChangePassword_UserNotFound_ThrowsException() {
+
+		when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			userService.changePassword(999L, "old", "new");
+		});
+	}
+
+	@Test
+	@DisplayName("FAILURE: Change Password - Incorrect current password")
+	void testChangePassword_WrongPassword_ThrowsException() {
+
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+		when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
+
+		UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
+			userService.changePassword(1L, "wrongPassword", "newPassword");
+		});
+
+		assertEquals("Current password is incorrect", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Delete User - User not found")
+	void testDeleteUser_NotFound_ThrowsException() {
+
+		when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			userService.deleteUser(999L);
+		});
+	}
+
+	@Test
+	@DisplayName("FAILURE: Delete User - Has active bookings")
+	void testDeleteUser_HasBookings_ThrowsException() {
+
+		testUser.setBookings(Arrays.asList(new com.hostel.entity.Booking()));
+		when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+
+		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+			userService.deleteUser(1L);
+		});
+
+		assertEquals("Cannot delete user with active bookings", exception.getMessage());
+		verify(userRepository, never()).delete(any(User.class));
+	}
 }

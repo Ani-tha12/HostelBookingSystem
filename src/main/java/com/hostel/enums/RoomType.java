@@ -2,7 +2,5 @@ package com.hostel.enums;
 
 public enum RoomType {
 
-	DORM,
-	PRIVATE,
-	SHARED
+	DORM, PRIVATE, SHARED
 }

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hostel.dto.request.ForgotPasswordRequest;
 import com.hostel.dto.request.LoginRequest;
+import com.hostel.dto.request.ResetPasswordRequest;
 import com.hostel.dto.request.UserRequest;
 import com.hostel.dto.response.ApiResponse;
 import com.hostel.dto.response.LoginResponse;
@@ -30,106 +32,116 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/users")
 @CrossOrigin(origins = "*")
 public class UserController {
-    
-    @Autowired
-    private UserService userService;
-    
-    
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<UserResponse>> registerUser(
-            @Valid @RequestBody UserRequest request) {
-        UserResponse response = userService.registerUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ApiResponse.success("User registered successfully", response));
-    }
-    
-    
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponse>> login(
-            @Valid @RequestBody LoginRequest request) {
-        LoginResponse response = userService.login(request);
-        return ResponseEntity.ok(ApiResponse.success("Login successful", response));
-    }
-    
-   
-    @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable Long userId) {
-        UserResponse response = userService.getUserById(userId);
-        return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", response));
-    }
-    
-    
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
-        List<UserResponse> users = userService.getAllUsers();
-        return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
-    }
-    
-    
-    @GetMapping("/role/{role}")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getUsersByRole(
-            @PathVariable UserRole role) {
-        List<UserResponse> users = userService.getUsersByRole(role);
-        return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
-    }
-    
-   
-    @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse<UserResponse>> updateUser(
-            @PathVariable Long userId,
-            @Valid @RequestBody UserRequest request) {
-        UserResponse response = userService.updateUser(userId, request);
-        return ResponseEntity.ok(ApiResponse.success("User updated successfully", response));
-    }
-    
-    
-    @PutMapping("/{userId}/change-password")
-    public ResponseEntity<ApiResponse<String>> changePassword(
-            @PathVariable Long userId,
-            @RequestParam String currentPassword,
-            @RequestParam String newPassword) {
-        userService.changePassword(userId, currentPassword, newPassword);
-        return ResponseEntity.ok(ApiResponse.success("Password changed successfully", null));
-    }
-    
-  
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
-    }
-    
-   
-    @GetMapping("/admin/owners/pending")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getPendingOwners() {
-        List<UserResponse> pendingOwners = userService.getPendingOwners();
-        return ResponseEntity.ok(
-            ApiResponse.success("Pending owners retrieved successfully", pendingOwners)
-        );
-    }
-    
-   
-    @PutMapping("/admin/owners/{userId}/approve")
-    public ResponseEntity<ApiResponse<UserResponse>> approveOwner(@PathVariable Long userId) {
-        UserResponse response = userService.approveOwner(userId);
-        return ResponseEntity.ok(ApiResponse.success("Owner approved successfully", response));
-    }
-    
-   
-    @PutMapping("/admin/owners/{userId}/reject")
-    public ResponseEntity<ApiResponse<UserResponse>> rejectOwner(
-            @PathVariable Long userId,
-            @RequestParam String reason) {
-        UserResponse response = userService.rejectOwner(userId, reason);
-        return ResponseEntity.ok(ApiResponse.success("Owner rejected", response));
-    }
-    
-    
-    @PutMapping("/admin/{userId}/role")
-    public ResponseEntity<ApiResponse<UserResponse>> updateUserRole(
-            @PathVariable Long userId,
-            @RequestParam UserRole newRole) {
-        UserResponse response = userService.updateUserRole(userId, newRole);
-        return ResponseEntity.ok(ApiResponse.success("User role updated successfully", response));
-    }
+
+	@Autowired
+	private UserService userService;
+
+	@PostMapping("/register")
+	public ResponseEntity<ApiResponse<UserResponse>> registerUser(@Valid @RequestBody UserRequest request) {
+		UserResponse response = userService.registerUser(request);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(ApiResponse.success("User registered successfully", response));
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
+		LoginResponse response = userService.login(request);
+		return ResponseEntity.ok(ApiResponse.success("Login successful", response));
+	}
+
+	@GetMapping("/{userId}")
+	public ResponseEntity<ApiResponse<UserResponse>> getUserById(@PathVariable Long userId) {
+		UserResponse response = userService.getUserById(userId);
+		return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", response));
+	}
+
+	@GetMapping
+	public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
+		List<UserResponse> users = userService.getAllUsers();
+		return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
+	}
+
+	@GetMapping("/role/{role}")
+	public ResponseEntity<ApiResponse<List<UserResponse>>> getUsersByRole(@PathVariable UserRole role) {
+		List<UserResponse> users = userService.getUsersByRole(role);
+		return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
+	}
+
+	@PutMapping("/{userId}")
+	public ResponseEntity<ApiResponse<UserResponse>> updateUser(@PathVariable Long userId,
+			@Valid @RequestBody UserRequest request) {
+		UserResponse response = userService.updateUser(userId, request);
+		return ResponseEntity.ok(ApiResponse.success("User updated successfully", response));
+	}
+
+	@PutMapping("/{userId}/change-password")
+	public ResponseEntity<ApiResponse<String>> changePassword(@PathVariable Long userId,
+			@RequestParam String currentPassword, @RequestParam String newPassword) {
+		userService.changePassword(userId, currentPassword, newPassword);
+		return ResponseEntity.ok(ApiResponse.success("Password changed successfully", null));
+	}
+
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable Long userId) {
+		userService.deleteUser(userId);
+		return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
+	}
+
+	@GetMapping("/admin/owners/pending")
+	public ResponseEntity<ApiResponse<List<UserResponse>>> getPendingOwners() {
+		List<UserResponse> pendingOwners = userService.getPendingOwners();
+		return ResponseEntity.ok(ApiResponse.success("Pending owners retrieved successfully", pendingOwners));
+	}
+
+	@PutMapping("/admin/owners/{userId}/approve")
+	public ResponseEntity<ApiResponse<UserResponse>> approveOwner(@PathVariable Long userId) {
+		UserResponse response = userService.approveOwner(userId);
+		return ResponseEntity.ok(ApiResponse.success("Owner approved successfully", response));
+	}
+
+	@PutMapping("/admin/owners/{userId}/reject")
+	public ResponseEntity<ApiResponse<UserResponse>> rejectOwner(@PathVariable Long userId,
+			@RequestParam String reason) {
+		UserResponse response = userService.rejectOwner(userId, reason);
+		return ResponseEntity.ok(ApiResponse.success("Owner rejected", response));
+	}
+
+	@PutMapping("/admin/{userId}/role")
+	public ResponseEntity<ApiResponse<UserResponse>> updateUserRole(@PathVariable Long userId,
+			@RequestParam UserRole newRole) {
+		UserResponse response = userService.updateUserRole(userId, newRole);
+		return ResponseEntity.ok(ApiResponse.success("User role updated successfully", response));
+	}
+
+	@PostMapping("/forgot-password")
+	public ResponseEntity<ApiResponse<String>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+
+		String resetToken = userService.forgotPassword(request);
+
+		return ResponseEntity.ok(ApiResponse
+				.success("Password reset instructions sent to your email. Token valid for 30 minutes.", resetToken));
+
+	}
+
+	@PostMapping("/reset-password")
+	public ResponseEntity<ApiResponse<String>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+
+		userService.resetPassword(request);
+
+		return ResponseEntity
+				.ok(ApiResponse.success("Password reset successfully. You can now login with new password.", null));
+	}
+
+	@GetMapping("/verify-reset-token")
+	public ResponseEntity<ApiResponse<Boolean>> verifyResetToken(@RequestParam String token) {
+
+		boolean isValid = userService.verifyResetToken(token);
+
+		if (isValid) {
+			return ResponseEntity.ok(ApiResponse.success("Token is valid", true));
+		} else {
+			return ResponseEntity.ok(ApiResponse.error("Token is invalid or expired"));
+		}
+	}
+
 }

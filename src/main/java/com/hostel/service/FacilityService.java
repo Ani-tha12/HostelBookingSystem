@@ -21,101 +21,90 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FacilityService {
-    
- 
-    private static final Logger logger = LoggerFactory.getLogger(FacilityService.class);
-    
-    @Autowired
-    private FacilityRepository facilityRepository;
-    
-    @Autowired
-    private FacilityMapper facilityMapper;
-    
 
-    public FacilityResponse addFacility(FacilityRequest request) {
-        logger.info("Adding new facility - Name: {}", request.getFacilityName());
-        
-        try {
-         
-            if (facilityRepository.existsByFacilityName(request.getFacilityName())) {
-                logger.warn("Facility creation failed: Facility already exists - Name: {}", 
-                           request.getFacilityName());
-                throw new BadRequestException("Facility already exists");
-            }
-            
-           
-            Facility facility = facilityMapper.toEntity(request);
-            
-            
-            Facility savedFacility = facilityRepository.save(facility);
-            
-            logger.info("Facility created successfully - ID: {}, Name: {}", 
-                       savedFacility.getFacilityId(), savedFacility.getFacilityName());
-            
-            return facilityMapper.toResponse(savedFacility);
-            
-        } catch (BadRequestException e) {
-            logger.error("Facility creation failed: {}", e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            logger.error("Unexpected error during facility creation", e);
-            throw new RuntimeException("Facility creation failed", e);
-        }
-    }
-    
+	private static final Logger logger = LoggerFactory.getLogger(FacilityService.class);
 
-    public List<FacilityResponse> getAllFacilities() {
-        logger.info("Fetching all facilities");
-        
-        List<FacilityResponse> facilities = facilityRepository.findAll().stream()
-            .map(facilityMapper::toResponse)
-            .collect(Collectors.toList());
-        
-        logger.info("Retrieved {} facilities", facilities.size());
-        return facilities;
-    }
-    
-    
-    public void deleteFacility(Long facilityId) {
-        logger.info("Attempting to delete facility - ID: {}", facilityId);
-        
-        Facility facility = facilityRepository.findById(facilityId)
-            .orElseThrow(() -> {
-                logger.error("Facility deletion failed: Facility not found - ID: {}", facilityId);
-                return new ResourceNotFoundException("Facility", "facilityId", facilityId);
-            });
-        
-      
-        if (facility.getHostels() != null && !facility.getHostels().isEmpty()) {
-            logger.warn("Facility deletion failed: Assigned to {} hostels - ID: {}", 
-                       facility.getHostels().size(), facilityId);
-            throw new BadRequestException("Cannot delete facility assigned to hostels");
-        }
-        
-        facilityRepository.delete(facility);
-        logger.info("Facility deleted successfully - ID: {}, Name: {}", 
-                   facilityId, facility.getFacilityName());
-    }
+	@Autowired
+	private FacilityRepository facilityRepository;
+
+	@Autowired
+	private FacilityMapper facilityMapper;
+
+	public FacilityResponse addFacility(FacilityRequest request) {
+		logger.info("Adding new facility - Name: {}", request.getFacilityName());
+
+		try {
+
+			if (facilityRepository.existsByFacilityName(request.getFacilityName())) {
+				logger.warn("Facility creation failed: Facility already exists - Name: {}", request.getFacilityName());
+				throw new BadRequestException("Facility already exists");
+			}
+
+			Facility facility = facilityMapper.toEntity(request);
+
+			Facility savedFacility = facilityRepository.save(facility);
+
+			logger.info("Facility created successfully - ID: {}, Name: {}", savedFacility.getFacilityId(),
+					savedFacility.getFacilityName());
+
+			return facilityMapper.toResponse(savedFacility);
+
+		} catch (BadRequestException e) {
+			logger.error("Facility creation failed: {}", e.getMessage());
+			throw e;
+		} catch (Exception e) {
+			logger.error("Unexpected error during facility creation", e);
+			throw new RuntimeException("Facility creation failed", e);
+		}
+	}
+
+	public List<FacilityResponse> getAllFacilities() {
+		logger.info("Fetching all facilities");
+
+		List<FacilityResponse> facilities = facilityRepository.findAll().stream().map(facilityMapper::toResponse)
+				.collect(Collectors.toList());
+
+		logger.info("Retrieved {} facilities", facilities.size());
+		return facilities;
+	}
+
+	public void deleteFacility(Long facilityId) {
+		logger.info("Attempting to delete facility - ID: {}", facilityId);
+
+		Facility facility = facilityRepository.findById(facilityId).orElseThrow(() -> {
+			logger.error("Facility deletion failed: Facility not found - ID: {}", facilityId);
+			return new ResourceNotFoundException("Facility", "facilityId", facilityId);
+		});
+
+		if (facility.getHostels() != null && !facility.getHostels().isEmpty()) {
+			logger.warn("Facility deletion failed: Assigned to {} hostels - ID: {}", facility.getHostels().size(),
+					facilityId);
+			throw new BadRequestException("Cannot delete facility assigned to hostels");
+		}
+
+		facilityRepository.delete(facility);
+		logger.info("Facility deleted successfully - ID: {}, Name: {}", facilityId, facility.getFacilityName());
+	}
 
 	public FacilityResponse getFacilityById(Long facilityId) {
-		 logger.info("Fetching facility with ID: {}", facilityId);
-		    Facility facility = facilityRepository.findById(facilityId)
-		            .orElseThrow(() -> new ResourceNotFoundException("Facility", "facilityId", facilityId));
-		    return facilityMapper.toResponse(facility);
+		logger.info("Fetching facility with ID: {}", facilityId);
+		Facility facility = facilityRepository.findById(facilityId)
+				.orElseThrow(() -> new ResourceNotFoundException("Facility", "facilityId", facilityId));
+		return facilityMapper.toResponse(facility);
 
 	}
 
 	public FacilityResponse updateFacility(Long facilityId, @Valid FacilityRequest request) {
-		 logger.info("Updating facility with ID: {}", facilityId);
-		    Facility facility = facilityRepository.findById(facilityId)
-		            .orElseThrow(() -> new ResourceNotFoundException("Facility", "facilityId", facilityId));
+		logger.info("Updating facility with ID: {}", facilityId);
+		Facility facility = facilityRepository.findById(facilityId)
+				.orElseThrow(() -> new ResourceNotFoundException("Facility", "facilityId", facilityId));
 
-		    facility.setFacilityName(request.getFacilityName());
+		facility.setFacilityName(request.getFacilityName());
 
-		    Facility updatedFacility = facilityRepository.save(facility);
-		    logger.info("Facility updated successfully - ID: {}, Name: {}", facilityId, updatedFacility.getFacilityName());
+		Facility updatedFacility = facilityRepository.save(facility);
+		logger.info("Facility updated successfully - ID: {}, Name: {}", facilityId, updatedFacility.getFacilityName());
 
-		    return facilityMapper.toResponse(updatedFacility);
+		return facilityMapper.toResponse(updatedFacility);
 
 	}
 }

@@ -41,388 +41,352 @@ import com.hostel.service.RoomService;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Room Service Tests")
 class RoomServiceTest {
-    
-    @Mock
-    private RoomRepository roomRepository;
-    
-    @Mock
-    private HostelRepository hostelRepository;
-    
-    @Mock
-    private RoomMapper roomMapper;
-    
-    @InjectMocks
-    private RoomService roomService;
-    
-    private Hostel testHostel;
-    private Room testRoom;
-    private RoomRequest roomRequest;
-    private RoomResponse roomResponse;
-    
-    @BeforeEach
-    void setUp() {
-      
-        User testOwner = new User();
-        testOwner.setUserId(5L);
-        testOwner.setName("Raj Kumar");
-        testOwner.setRole(UserRole.OWNER);
-        
-       
-        testHostel = new Hostel();
-        testHostel.setHostelId(1L);
-        testHostel.setHostelName("Sunshine Hostel");
-        testHostel.setCity("Chennai");
-        testHostel.setApproved(true);
-        testHostel.setOwner(testOwner);
-        
-        
-        testRoom = new Room();
-        testRoom.setRoomId(10L);
-        testRoom.setHostel(testHostel);
-        testRoom.setRoomType(RoomType.DORM);
-        testRoom.setTotalBeds(6);
-        testRoom.setAvailableBeds(6);
-        testRoom.setPricePerNight(300.0);
-        testRoom.setDescription("6-bed dormitory");
-        
-       
-        roomRequest = new RoomRequest();
-        roomRequest.setHostelId(1L);
-        roomRequest.setRoomType(RoomType.DORM);
-        roomRequest.setTotalBeds(6);
-        roomRequest.setAvailableBeds(6);
-        roomRequest.setPricePerNight(300.0);
-        roomRequest.setDescription("6-bed dormitory");
-        
-        
-        roomResponse = new RoomResponse();
-        roomResponse.setRoomId(10L);
-        roomResponse.setHostelId(1L);
-        roomResponse.setHostelName("Sunshine Hostel");
-        roomResponse.setRoomType(RoomType.DORM);
-        roomResponse.setTotalBeds(6);
-        roomResponse.setAvailableBeds(6);
-        roomResponse.setPricePerNight(300.0);
-    }
-    
- 
-    
-    @Test
-    @DisplayName("SUCCESS: Add Room - Should create room for approved hostel")
-    void testAddRoom_Success() {
-      
-        when(hostelRepository.findById(1L)).thenReturn(Optional.of(testHostel));
-        when(roomMapper.toEntity(any(RoomRequest.class))).thenReturn(testRoom);
-        when(roomRepository.save(any(Room.class))).thenReturn(testRoom);
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-        
-        RoomResponse result = roomService.addRoom(roomRequest);
-        
-        
-        assertNotNull(result);
-        assertEquals(10L, result.getRoomId());
-        assertEquals(RoomType.DORM, result.getRoomType());
-        assertEquals(6, result.getTotalBeds());
-        assertEquals(300.0, result.getPricePerNight());
-        
-        verify(hostelRepository, times(1)).findById(1L);
-        verify(roomRepository, times(1)).save(any(Room.class));
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get Available Rooms By Hostel - Should return available rooms")
-    void testGetAvailableRoomsByHostel_Success() {
-       
-        List<Room> rooms = Arrays.asList(testRoom);
-        
-        when(roomRepository.findAvailableRoomsByHostel(1L)).thenReturn(rooms);
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-      
-        List<RoomResponse> result = roomService.getAvailableRoomsByHostel(1L);
-        
-      
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals(6, result.get(0).getAvailableBeds());
-        
-        verify(roomRepository, times(1)).findAvailableRoomsByHostel(1L);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Update Availability - Should update available beds")
-    void testUpdateAvailability_Success() {
-       
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-        when(roomRepository.save(any(Room.class))).thenReturn(testRoom);
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-        
-        RoomResponse result = roomService.updateAvailability(10L, 4);
-        
-       
-        assertNotNull(result);
-        assertEquals(4, testRoom.getAvailableBeds());
-        
-        verify(roomRepository, times(1)).save(testRoom);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Check Availability - Should return true when beds available")
-    void testCheckAvailability_Success() {
-        
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-     
-        boolean result = roomService.checkAvailability(10L, 3);
-        
-       
-        assertTrue(result);
-        
-        verify(roomRepository, times(1)).findById(10L);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get All Rooms - Should return all rooms")
-    void testGetAllRooms_Success() {
-        
-        List<Room> rooms = Arrays.asList(testRoom);
-        
-        when(roomRepository.findAll()).thenReturn(rooms);
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-       
-        List<RoomResponse> result = roomService.getAllRooms();
-       
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        
-        verify(roomRepository, times(1)).findAll();
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get Room By ID - Should return room details")
-    void testGetRoomById_Success() {
-        
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-      
-        RoomResponse result = roomService.getRoomById(10L);
-        
-        
-        assertNotNull(result);
-        assertEquals(10L, result.getRoomId());
-        assertEquals("Sunshine Hostel", result.getHostelName());
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get Rooms By Hostel - Should return hostel rooms")
-    void testGetRoomsByHostel_Success() {
-      
-        List<Room> rooms = Arrays.asList(testRoom);
-        
-        when(roomRepository.findByHostel_HostelId(1L)).thenReturn(rooms);
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-        
-        List<RoomResponse> result = roomService.getRoomsByHostel(1L);
-        
-       
-        assertNotNull(result);
-        assertEquals(1, result.size());
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Get Available Rooms - Should return rooms with available beds")
-    void testGetAvailableRooms_Success() {
-      
-        testRoom.setAvailableBeds(3);
-        List<Room> rooms = Arrays.asList(testRoom);
-        
-        when(roomRepository.findAll()).thenReturn(rooms);
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-       
-        List<RoomResponse> result = roomService.getAvailableRooms();
-        
-       
-        assertNotNull(result);
-        assertEquals(1, result.size());
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Update Room - Should update room details")
-    void testUpdateRoom_Success() {
-      
-        RoomRequest updateRequest = new RoomRequest();
-        updateRequest.setRoomType(RoomType.PRIVATE);
-        updateRequest.setTotalBeds(2);
-        updateRequest.setAvailableBeds(2);
-        updateRequest.setPricePerNight(800.0);
-        
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-        when(roomRepository.save(any(Room.class))).thenReturn(testRoom);
-        when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
-        
-        
-        RoomResponse result = roomService.updateRoom(10L, updateRequest);
-        
-       
-        assertNotNull(result);
-        verify(roomRepository, times(1)).save(testRoom);
-    }
-    
-    @Test
-    @DisplayName("SUCCESS: Delete Room - Should delete room")
-    void testDeleteRoom_Success() {
-       
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-        doNothing().when(roomRepository).delete(any(Room.class));
-        
-      
-        roomService.deleteRoom(10L);
-        
-       
-        verify(roomRepository, times(1)).delete(testRoom);
-    }
-    
-  
-    
-    @Test
-    @DisplayName("FAILURE: Add Room - Hostel not found")
-    void testAddRoom_HostelNotFound_ThrowsException() {
-        
-        when(hostelRepository.findById(999L)).thenReturn(Optional.empty());
-        roomRequest.setHostelId(999L);
-        
-       
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
-            roomService.addRoom(roomRequest);
-        });
-        
-        assertTrue(exception.getMessage().contains("Hostel"));
-        verify(roomRepository, never()).save(any(Room.class));
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Add Room - Hostel not approved")
-    void testAddRoom_HostelNotApproved_ThrowsException() {
-        
-        testHostel.setApproved(false);
-        
-        when(hostelRepository.findById(1L)).thenReturn(Optional.of(testHostel));
-        
-        
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            roomService.addRoom(roomRequest);
-        });
-        
-        assertEquals("Cannot add room to unapproved hostel", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Update Availability - Room not found")
-    void testUpdateAvailability_RoomNotFound_ThrowsException() {
-     
-        when(roomRepository.findById(999L)).thenReturn(Optional.empty());
-        
-        
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
-            roomService.updateAvailability(999L, 5);
-        });
-        
-        assertTrue(exception.getMessage().contains("Room"));
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Update Availability - Invalid beds count (negative)")
-    void testUpdateAvailability_NegativeBeds_ThrowsException() {
-       
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-        
-     
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            roomService.updateAvailability(10L, -1);
-        });
-        
-        assertEquals("Invalid available beds count", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Update Availability - Exceeds total beds")
-    void testUpdateAvailability_ExceedsTotalBeds_ThrowsException() {
-       
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-        
-        
-        BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-            roomService.updateAvailability(10L, 10); // Total is 6
-        });
-        
-        assertEquals("Invalid available beds count", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Check Availability - Room not found")
-    void testCheckAvailability_RoomNotFound_ThrowsException() {
-       
-        when(roomRepository.findById(999L)).thenReturn(Optional.empty());
-        
-       
-        assertThrows(ResourceNotFoundException.class, () -> {
-            roomService.checkAvailability(999L, 2);
-        });
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Check Availability - Not enough beds")
-    void testCheckAvailability_NotEnoughBeds_ReturnsFalse() {
-      
-        testRoom.setAvailableBeds(2);
-        when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
-        
-       
-        boolean result = roomService.checkAvailability(10L, 5);
-        
-       
-        assertFalse(result);
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Get Room By ID - Not found")
-    void testGetRoomById_NotFound_ThrowsException() {
-      
-        when(roomRepository.findById(999L)).thenReturn(Optional.empty());
-        
-        
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
-            roomService.getRoomById(999L);
-        });
-        
-        assertTrue(exception.getMessage().contains("Room"));
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Update Room - Room not found")
-    void testUpdateRoom_NotFound_ThrowsException() {
-       
-        when(roomRepository.findById(999L)).thenReturn(Optional.empty());
-        
-       
-        assertThrows(ResourceNotFoundException.class, () -> {
-            roomService.updateRoom(999L, roomRequest);
-        });
-    }
-    
-    @Test
-    @DisplayName("FAILURE: Delete Room - Room not found")
-    void testDeleteRoom_NotFound_ThrowsException() {
-        
-        when(roomRepository.findById(999L)).thenReturn(Optional.empty());
-       
-        assertThrows(ResourceNotFoundException.class, () -> {
-            roomService.deleteRoom(999L);
-        });
-    }
+
+	@Mock
+	private RoomRepository roomRepository;
+
+	@Mock
+	private HostelRepository hostelRepository;
+
+	@Mock
+	private RoomMapper roomMapper;
+
+	@InjectMocks
+	private RoomService roomService;
+
+	private Hostel testHostel;
+	private Room testRoom;
+	private RoomRequest roomRequest;
+	private RoomResponse roomResponse;
+
+	@BeforeEach
+	void setUp() {
+
+		User testOwner = new User();
+		testOwner.setUserId(5L);
+		testOwner.setName("Raj Kumar");
+		testOwner.setRole(UserRole.OWNER);
+
+		testHostel = new Hostel();
+		testHostel.setHostelId(1L);
+		testHostel.setHostelName("Sunshine Hostel");
+		testHostel.setCity("Chennai");
+		testHostel.setApproved(true);
+		testHostel.setOwner(testOwner);
+
+		testRoom = new Room();
+		testRoom.setRoomId(10L);
+		testRoom.setHostel(testHostel);
+		testRoom.setRoomType(RoomType.DORM);
+		testRoom.setTotalBeds(6);
+		testRoom.setAvailableBeds(6);
+		testRoom.setPricePerNight(300.0);
+		testRoom.setDescription("6-bed dormitory");
+
+		roomRequest = new RoomRequest();
+		roomRequest.setHostelId(1L);
+		roomRequest.setRoomType(RoomType.DORM);
+		roomRequest.setTotalBeds(6);
+		roomRequest.setAvailableBeds(6);
+		roomRequest.setPricePerNight(300.0);
+		roomRequest.setDescription("6-bed dormitory");
+
+		roomResponse = new RoomResponse();
+		roomResponse.setRoomId(10L);
+		roomResponse.setHostelId(1L);
+		roomResponse.setHostelName("Sunshine Hostel");
+		roomResponse.setRoomType(RoomType.DORM);
+		roomResponse.setTotalBeds(6);
+		roomResponse.setAvailableBeds(6);
+		roomResponse.setPricePerNight(300.0);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Add Room - Should create room for approved hostel")
+	void testAddRoom_Success() {
+
+		when(hostelRepository.findById(1L)).thenReturn(Optional.of(testHostel));
+		when(roomMapper.toEntity(any(RoomRequest.class))).thenReturn(testRoom);
+		when(roomRepository.save(any(Room.class))).thenReturn(testRoom);
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		RoomResponse result = roomService.addRoom(roomRequest);
+
+		assertNotNull(result);
+		assertEquals(10L, result.getRoomId());
+		assertEquals(RoomType.DORM, result.getRoomType());
+		assertEquals(6, result.getTotalBeds());
+		assertEquals(300.0, result.getPricePerNight());
+
+		verify(hostelRepository, times(1)).findById(1L);
+		verify(roomRepository, times(1)).save(any(Room.class));
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get Available Rooms By Hostel - Should return available rooms")
+	void testGetAvailableRoomsByHostel_Success() {
+
+		List<Room> rooms = Arrays.asList(testRoom);
+
+		when(roomRepository.findAvailableRoomsByHostel(1L)).thenReturn(rooms);
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		List<RoomResponse> result = roomService.getAvailableRoomsByHostel(1L);
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		assertEquals(6, result.get(0).getAvailableBeds());
+
+		verify(roomRepository, times(1)).findAvailableRoomsByHostel(1L);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Update Availability - Should update available beds")
+	void testUpdateAvailability_Success() {
+
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+		when(roomRepository.save(any(Room.class))).thenReturn(testRoom);
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		RoomResponse result = roomService.updateAvailability(10L, 4);
+
+		assertNotNull(result);
+		assertEquals(4, testRoom.getAvailableBeds());
+
+		verify(roomRepository, times(1)).save(testRoom);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Check Availability - Should return true when beds available")
+	void testCheckAvailability_Success() {
+
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+
+		boolean result = roomService.checkAvailability(10L, 3);
+
+		assertTrue(result);
+
+		verify(roomRepository, times(1)).findById(10L);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get All Rooms - Should return all rooms")
+	void testGetAllRooms_Success() {
+
+		List<Room> rooms = Arrays.asList(testRoom);
+
+		when(roomRepository.findAll()).thenReturn(rooms);
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		List<RoomResponse> result = roomService.getAllRooms();
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+
+		verify(roomRepository, times(1)).findAll();
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get Room By ID - Should return room details")
+	void testGetRoomById_Success() {
+
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		RoomResponse result = roomService.getRoomById(10L);
+
+		assertNotNull(result);
+		assertEquals(10L, result.getRoomId());
+		assertEquals("Sunshine Hostel", result.getHostelName());
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get Rooms By Hostel - Should return hostel rooms")
+	void testGetRoomsByHostel_Success() {
+
+		List<Room> rooms = Arrays.asList(testRoom);
+
+		when(roomRepository.findByHostel_HostelId(1L)).thenReturn(rooms);
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		List<RoomResponse> result = roomService.getRoomsByHostel(1L);
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Get Available Rooms - Should return rooms with available beds")
+	void testGetAvailableRooms_Success() {
+
+		testRoom.setAvailableBeds(3);
+		List<Room> rooms = Arrays.asList(testRoom);
+
+		when(roomRepository.findAll()).thenReturn(rooms);
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		List<RoomResponse> result = roomService.getAvailableRooms();
+
+		assertNotNull(result);
+		assertEquals(1, result.size());
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Update Room - Should update room details")
+	void testUpdateRoom_Success() {
+
+		RoomRequest updateRequest = new RoomRequest();
+		updateRequest.setRoomType(RoomType.PRIVATE);
+		updateRequest.setTotalBeds(2);
+		updateRequest.setAvailableBeds(2);
+		updateRequest.setPricePerNight(800.0);
+
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+		when(roomRepository.save(any(Room.class))).thenReturn(testRoom);
+		when(roomMapper.toResponse(any(Room.class))).thenReturn(roomResponse);
+
+		RoomResponse result = roomService.updateRoom(10L, updateRequest);
+
+		assertNotNull(result);
+		verify(roomRepository, times(1)).save(testRoom);
+	}
+
+	@Test
+	@DisplayName("SUCCESS: Delete Room - Should delete room")
+	void testDeleteRoom_Success() {
+
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+		doNothing().when(roomRepository).delete(any(Room.class));
+
+		roomService.deleteRoom(10L);
+
+		verify(roomRepository, times(1)).delete(testRoom);
+	}
+
+	@Test
+	@DisplayName("FAILURE: Add Room - Hostel not found")
+	void testAddRoom_HostelNotFound_ThrowsException() {
+
+		when(hostelRepository.findById(999L)).thenReturn(Optional.empty());
+		roomRequest.setHostelId(999L);
+
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			roomService.addRoom(roomRequest);
+		});
+
+		assertTrue(exception.getMessage().contains("Hostel"));
+		verify(roomRepository, never()).save(any(Room.class));
+	}
+
+	@Test
+	@DisplayName("FAILURE: Add Room - Hostel not approved")
+	void testAddRoom_HostelNotApproved_ThrowsException() {
+
+		testHostel.setApproved(false);
+
+		when(hostelRepository.findById(1L)).thenReturn(Optional.of(testHostel));
+
+		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+			roomService.addRoom(roomRequest);
+		});
+
+		assertEquals("Cannot add room to unapproved hostel", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Update Availability - Room not found")
+	void testUpdateAvailability_RoomNotFound_ThrowsException() {
+
+		when(roomRepository.findById(999L)).thenReturn(Optional.empty());
+
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			roomService.updateAvailability(999L, 5);
+		});
+
+		assertTrue(exception.getMessage().contains("Room"));
+	}
+
+	@Test
+	@DisplayName("FAILURE: Update Availability - Invalid beds count (negative)")
+	void testUpdateAvailability_NegativeBeds_ThrowsException() {
+
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+
+		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+			roomService.updateAvailability(10L, -1);
+		});
+
+		assertEquals("Invalid available beds count", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Update Availability - Exceeds total beds")
+	void testUpdateAvailability_ExceedsTotalBeds_ThrowsException() {
+
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+
+		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
+			roomService.updateAvailability(10L, 10); // Total is 6
+		});
+
+		assertEquals("Invalid available beds count", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("FAILURE: Check Availability - Room not found")
+	void testCheckAvailability_RoomNotFound_ThrowsException() {
+
+		when(roomRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			roomService.checkAvailability(999L, 2);
+		});
+	}
+
+	@Test
+	@DisplayName("FAILURE: Check Availability - Not enough beds")
+	void testCheckAvailability_NotEnoughBeds_ReturnsFalse() {
+
+		testRoom.setAvailableBeds(2);
+		when(roomRepository.findById(10L)).thenReturn(Optional.of(testRoom));
+
+		boolean result = roomService.checkAvailability(10L, 5);
+
+		assertFalse(result);
+	}
+
+	@Test
+	@DisplayName("FAILURE: Get Room By ID - Not found")
+	void testGetRoomById_NotFound_ThrowsException() {
+
+		when(roomRepository.findById(999L)).thenReturn(Optional.empty());
+
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			roomService.getRoomById(999L);
+		});
+
+		assertTrue(exception.getMessage().contains("Room"));
+	}
+
+	@Test
+	@DisplayName("FAILURE: Update Room - Room not found")
+	void testUpdateRoom_NotFound_ThrowsException() {
+
+		when(roomRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			roomService.updateRoom(999L, roomRequest);
+		});
+	}
+
+	@Test
+	@DisplayName("FAILURE: Delete Room - Room not found")
+	void testDeleteRoom_NotFound_ThrowsException() {
+
+		when(roomRepository.findById(999L)).thenReturn(Optional.empty());
+
+		assertThrows(ResourceNotFoundException.class, () -> {
+			roomService.deleteRoom(999L);
+		});
+	}
 }

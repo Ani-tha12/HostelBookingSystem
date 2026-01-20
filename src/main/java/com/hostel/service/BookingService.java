@@ -1,5 +1,7 @@
 package com.hostel.service;
 
+//import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -31,253 +33,299 @@ import com.hostel.repository.UserRepository;
 @Service
 @Transactional
 public class BookingService {
-    
-   
-    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
-    
-    @Autowired
-    private BookingRepository bookingRepository;
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private HostelRepository hostelRepository;
-    
-    @Autowired
-    private RoomRepository roomRepository;
-    
-    @Autowired
-    private BookingMapper bookingMapper;
-   
-    
-  
-    public BookingResponse createBooking(BookingRequest request) {
-        logger.info("Creating booking - User ID: {}, Hostel ID: {}, Room ID: {}", 
-                   request.getUserId(), request.getHostelId(), request.getRoomId());
-        
-        try {
-           
-            User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> {
-                    logger.error("Booking creation failed: User not found - ID: {}", request.getUserId());
-                    return new ResourceNotFoundException("User", "userId", request.getUserId());
-                });
-            
-           
-            Hostel hostel = hostelRepository.findById(request.getHostelId())
-                .orElseThrow(() -> {
-                    logger.error("Booking creation failed: Hostel not found - ID: {}", request.getHostelId());
-                    return new ResourceNotFoundException("Hostel", "hostelId", request.getHostelId());
-                });
-            
-           
-            Room room = roomRepository.findById(request.getRoomId())
-                .orElseThrow(() -> {
-                    logger.error("Booking creation failed: Room not found - ID: {}", request.getRoomId());
-                    return new ResourceNotFoundException("Room", "roomId", request.getRoomId());
-                });
-            
-            logger.debug("Booking entities validated - User: {}, Hostel: {}, Room: {}", 
-                        user.getEmail(), hostel.getHostelName(), room.getRoomId());
-            
-           
-            if (request.getCheckInDate().isBefore(LocalDate.now())) {
-                logger.warn("Booking validation failed: Check-in date is in the past - {}", 
-                           request.getCheckInDate());
-                throw new BadRequestException("Check-in date cannot be in the past");
-            }
-            
-            if (request.getCheckOutDate().isBefore(request.getCheckInDate())) {
-                logger.warn("Booking validation failed: Check-out date before check-in - CheckIn: {}, CheckOut: {}", 
-                           request.getCheckInDate(), request.getCheckOutDate());
-                throw new BadRequestException("Check-out date must be after check-in date");
-            }
-            
-            if (!hostel.getApproved()) {
-                logger.warn("Booking failed: Hostel not approved - ID: {}, Name: {}", 
-                           hostel.getHostelId(), hostel.getHostelName());
-                throw new BadRequestException("Hostel is not approved for bookings");
-            }
-            
-            logger.debug("Checking room availability - Available: {}, Required: {}", 
-                        room.getAvailableBeds(), request.getNumberOfBeds());
-            
-            if (room.getAvailableBeds() < request.getNumberOfBeds()) {
 
-                logger.warn("Booking failed: Insufficient beds - Available: {}, Required: {}", 
-                           room.getAvailableBeds(), request.getNumberOfBeds());
-                throw new BadRequestException("Not enough beds available. Only " + 
-                    room.getAvailableBeds() + " beds available");
-            }
-            
-           
-            List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
-                request.getRoomId(), 
-                request.getCheckInDate(), 
-                request.getCheckOutDate()
-            );
-            
-            if (!overlappingBookings.isEmpty()) {
-                logger.warn("Booking failed: Room already booked for selected dates - Room ID: {}, Overlapping bookings: {}", 
-                           request.getRoomId(), overlappingBookings.size());
-                throw new BadRequestException("Room is already booked for selected dates");
-            }
-            
-            
-            long numberOfNights = ChronoUnit.DAYS.between(
-                request.getCheckInDate(), 
-                request.getCheckOutDate()
-            );
-            double totalPrice = numberOfNights * room.getPricePerNight() * request.getNumberOfBeds();
-            
-            logger.debug("Booking calculation - Nights: {}, Price per night: {}, Total beds: {}, Total price: {}", 
-                        numberOfNights, room.getPricePerNight(), request.getNumberOfBeds(), totalPrice);
-            
-            
-            Booking booking = bookingMapper.toEntity(request);
-            booking.setUser(user);
-            booking.setHostel(hostel);
-            booking.setRoom(room);
-            booking.setTotalPrice(totalPrice);
-            booking.setBookingStatus(BookingStatus.CONFIRMED);
-            
-           
-            int previousAvailability = room.getAvailableBeds();
-            room.setAvailableBeds(room.getAvailableBeds() - request.getNumberOfBeds());
-            roomRepository.save(room);
-            
-            logger.debug("Room availability updated - Room ID: {}, Previous: {}, New: {}", 
-                        room.getRoomId(), previousAvailability, room.getAvailableBeds());
-            
-          
-            Booking savedBooking = bookingRepository.save(booking);
-            
-            logger.info("Booking created successfully - Booking ID: {}, User: {}, Hostel: {}, Total Price: {}", 
-                       savedBooking.getBookingId(), user.getEmail(), hostel.getHostelName(), totalPrice);
-            
-            return bookingMapper.toResponse(savedBooking);
-            
-        } catch (ResourceNotFoundException | BadRequestException e) {
-            logger.error("Booking creation failed: {}", e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            logger.error("Unexpected error during booking creation", e);
-            throw new RuntimeException("Booking creation failed", e);
-        }
-    }
-    
-   
-    public BookingResponse cancelBooking(Long bookingId, String reason) {
-        logger.info("Attempting to cancel booking - ID: {}, Reason: {}", bookingId, reason);
-        
-        Booking booking = bookingRepository.findById(bookingId)
-            .orElseThrow(() -> {
-                logger.error("Booking cancellation failed: Booking not found - ID: {}", bookingId);
-                return new ResourceNotFoundException("Booking", "bookingId", bookingId);
-            });
-        
-        
-        if (booking.getBookingStatus() == BookingStatus.COMPLETED) {
-            logger.warn("Cancellation failed: Booking already completed - ID: {}", bookingId);
-            throw new BadRequestException("Cannot cancel completed booking");
-        }
-        
-        if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
-            logger.warn("Cancellation failed: Booking already cancelled - ID: {}", bookingId);
-            throw new BadRequestException("Booking is already cancelled");
-        }
-        
-       
-        booking.setBookingStatus(BookingStatus.CANCELLED);
-        
-        
-        Room room = booking.getRoom();
-        int previousAvailability = room.getAvailableBeds();
-        room.setAvailableBeds(room.getAvailableBeds() + booking.getNumberOfBeds());
-        roomRepository.save(room);
-        
-        logger.debug("Room availability restored - Room ID: {}, Previous: {}, New: {}", 
-                    room.getRoomId(), previousAvailability, room.getAvailableBeds());
-        
-        Booking updatedBooking = bookingRepository.save(booking);
-        
-        logger.info("Booking cancelled successfully - ID: {}, User: {}, Beds restored: {}", 
-                   bookingId, booking.getUser().getEmail(), booking.getNumberOfBeds());
-        
-        return bookingMapper.toResponse(updatedBooking);
-    }
-    
+	private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
+
+	@Autowired
+	private BookingRepository bookingRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private HostelRepository hostelRepository;
+
+	@Autowired
+	private RoomRepository roomRepository;
+
+	@Autowired
+	private BookingMapper bookingMapper;
+
+//    public BookingResponse createBooking(BookingRequest request) {
+//        logger.info("Creating booking - User ID: {}, Hostel ID: {}, Room ID: {}", 
+//                   request.getUserId(), request.getHostelId(), request.getRoomId());
+//        
+//        try {
+//           
+//            User user = userRepository.findById(request.getUserId())
+//                .orElseThrow(() -> {
+//                    logger.error("Booking creation failed: User not found - ID: {}", request.getUserId());
+//                    return new ResourceNotFoundException("User", "userId", request.getUserId());
+//                });
+//            
+//           
+//            Hostel hostel = hostelRepository.findById(request.getHostelId())
+//                .orElseThrow(() -> {
+//                    logger.error("Booking creation failed: Hostel not found - ID: {}", request.getHostelId());
+//                    return new ResourceNotFoundException("Hostel", "hostelId", request.getHostelId());
+//                });
+//            
+//           
+//            Room room = roomRepository.findById(request.getRoomId())
+//                .orElseThrow(() -> {
+//                    logger.error("Booking creation failed: Room not found - ID: {}", request.getRoomId());
+//                    return new ResourceNotFoundException("Room", "roomId", request.getRoomId());
+//                });
+//            
+//            logger.debug("Booking entities validated - User: {}, Hostel: {}, Room: {}", 
+//                        user.getEmail(), hostel.getHostelName(), room.getRoomId());
+//            
+//           
+//            if (request.getCheckInDate().isBefore(LocalDate.now())) {
+//                logger.warn("Booking validation failed: Check-in date is in the past - {}", 
+//                           request.getCheckInDate());
+//                throw new BadRequestException("Check-in date cannot be in the past");
+//            }
+//            
+//            if (request.getCheckOutDate().isBefore(request.getCheckInDate())) {
+//                logger.warn("Booking validation failed: Check-out date before check-in - CheckIn: {}, CheckOut: {}", 
+//                           request.getCheckInDate(), request.getCheckOutDate());
+//                throw new BadRequestException("Check-out date must be after check-in date");
+//            }
+//            
+//            if (!hostel.getApproved()) {
+//                logger.warn("Booking failed: Hostel not approved - ID: {}, Name: {}", 
+//                           hostel.getHostelId(), hostel.getHostelName());
+//                throw new BadRequestException("Hostel is not approved for bookings");
+//            }
+//            
+//            logger.debug("Checking room availability - Available: {}, Required: {}", 
+//                        room.getAvailableBeds(), request.getNumberOfBeds());
+//            
+//            if (room.getAvailableBeds() < request.getNumberOfBeds()) {
+//
+//                logger.warn("Booking failed: Insufficient beds - Available: {}, Required: {}", 
+//                           room.getAvailableBeds(), request.getNumberOfBeds());
+//                throw new BadRequestException("Not enough beds available. Only " + 
+//                    room.getAvailableBeds() + " beds available");
+//            }
+//            
+//           
+//            List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
+//                request.getRoomId(), 
+//                request.getCheckInDate(), 
+//                request.getCheckOutDate()
+//            );
+//            
+//            if (!overlappingBookings.isEmpty()) {
+//                logger.warn("Booking failed: Room already booked for selected dates - Room ID: {}, Overlapping bookings: {}", 
+//                           request.getRoomId(), overlappingBookings.size());
+//                throw new BadRequestException("Room is already booked for selected dates");
+//            }
+//            
+//            
+//            long numberOfNights = ChronoUnit.DAYS.between(
+//                request.getCheckInDate(), 
+//                request.getCheckOutDate()
+//            );
+//            double totalPrice = numberOfNights * room.getPricePerNight() * request.getNumberOfBeds();
+//            
+//            logger.debug("Booking calculation - Nights: {}, Price per night: {}, Total beds: {}, Total price: {}", 
+//                        numberOfNights, room.getPricePerNight(), request.getNumberOfBeds(), totalPrice);
+//            
+//            
+//            Booking booking = bookingMapper.toEntity(request);
+//            booking.setUser(user);
+//            booking.setHostel(hostel);
+//            booking.setRoom(room);
+//            booking.setTotalPrice(totalPrice);
+//            booking.setBookingStatus(BookingStatus.CONFIRMED);
+//            
+//           
+//            int previousAvailability = room.getAvailableBeds();
+//            room.setAvailableBeds(room.getAvailableBeds() - request.getNumberOfBeds());
+//            roomRepository.save(room);
+//            
+//            logger.debug("Room availability updated - Room ID: {}, Previous: {}, New: {}", 
+//                        room.getRoomId(), previousAvailability, room.getAvailableBeds());
+//            
+//          
+//            Booking savedBooking = bookingRepository.save(booking);
+//            
+//            logger.info("Booking created successfully - Booking ID: {}, User: {}, Hostel: {}, Total Price: {}", 
+//                       savedBooking.getBookingId(), user.getEmail(), hostel.getHostelName(), totalPrice);
+//            
+//            return bookingMapper.toResponse(savedBooking);
+//            
+//        } catch (ResourceNotFoundException | BadRequestException e) {
+//            logger.error("Booking creation failed: {}", e.getMessage());
+//            throw e;
+//        } catch (Exception e) {
+//            logger.error("Unexpected error during booking creation", e);
+//            throw new RuntimeException("Booking creation failed", e);
+//        }
+//    }
+//    
+//   
+	// BookingService.java
+
+	public BookingResponse createBooking(BookingRequest request) {
+		logger.info("Creating booking - User ID: {}, Hostel ID: {}, Room ID: {}", request.getUserId(),
+				request.getHostelId(), request.getRoomId());
+
+		try {
+
+			User user = userRepository.findById(request.getUserId())
+					.orElseThrow(() -> new ResourceNotFoundException("User", "userId", request.getUserId()));
+
+			Hostel hostel = hostelRepository.findById(request.getHostelId())
+					.orElseThrow(() -> new ResourceNotFoundException("Hostel", "hostelId", request.getHostelId()));
+
+			Room room = roomRepository.findById(request.getRoomId())
+					.orElseThrow(() -> new ResourceNotFoundException("Room", "roomId", request.getRoomId()));
+
+			long numberOfNights = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
+			double totalPrice = numberOfNights * room.getPricePerNight() * request.getNumberOfBeds();
+
+			Booking booking = bookingMapper.toEntity(request);
+			booking.setUser(user);
+			booking.setHostel(hostel);
+			booking.setRoom(room);
+			booking.setTotalPrice(totalPrice);
+
+			booking.setBookingStatus(BookingStatus.PENDING_PAYMENT);
+
+			room.setAvailableBeds(room.getAvailableBeds() - request.getNumberOfBeds());
+			roomRepository.save(room);
+
+			Booking savedBooking = bookingRepository.save(booking);
+
+			logger.info("Booking created - ID: {}, Status: PENDING_PAYMENT, Amount: {}", savedBooking.getBookingId(),
+					totalPrice);
+
+			return bookingMapper.toResponse(savedBooking);
+
+		} catch (ResourceNotFoundException | BadRequestException e) {
+			logger.error("Booking creation failed: {}", e.getMessage());
+			throw e;
+		} catch (Exception e) {
+			logger.error("Unexpected error during booking creation", e);
+			throw new RuntimeException("Booking creation failed", e);
+		}
+	}
+
+	public BookingResponse confirmBookingAfterPayment(Long bookingId) {
+		logger.info("Confirming booking after payment - ID: {}", bookingId);
+
+		Booking booking = bookingRepository.findById(bookingId)
+				.orElseThrow(() -> new ResourceNotFoundException("Booking", "bookingId", bookingId));
+
+		if (booking.getBookingStatus() != BookingStatus.PENDING_PAYMENT) {
+			logger.warn("Booking confirmation failed: Not in PENDING_PAYMENT state - ID: {}", bookingId);
+			throw new BadRequestException("Booking cannot be confirmed unless it is pending payment");
+		}
+
+		booking.setBookingStatus(BookingStatus.CONFIRMED);
+		Booking updatedBooking = bookingRepository.save(booking);
+
+		logger.info("Booking confirmed successfully - ID: {}", bookingId);
+		return bookingMapper.toResponse(updatedBooking);
+	}
+
+	public BookingResponse cancelBooking(Long bookingId, String reason) {
+		logger.info("Attempting to cancel booking - ID: {}, Reason: {}", bookingId, reason);
+
+		Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> {
+			logger.error("Booking cancellation failed: Booking not found - ID: {}", bookingId);
+			return new ResourceNotFoundException("Booking", "bookingId", bookingId);
+		});
+
+		if (booking.getBookingStatus() == BookingStatus.COMPLETED) {
+			logger.warn("Cancellation failed: Booking already completed - ID: {}", bookingId);
+			throw new BadRequestException("Cannot cancel completed booking");
+		}
+
+		if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
+			logger.warn("Cancellation failed: Booking already cancelled - ID: {}", bookingId);
+			throw new BadRequestException("Booking is already cancelled");
+		}
+
+		booking.setBookingStatus(BookingStatus.CANCELLED);
+
+		Room room = booking.getRoom();
+		int previousAvailability = room.getAvailableBeds();
+		room.setAvailableBeds(room.getAvailableBeds() + booking.getNumberOfBeds());
+		roomRepository.save(room);
+
+		logger.debug("Room availability restored - Room ID: {}, Previous: {}, New: {}", room.getRoomId(),
+				previousAvailability, room.getAvailableBeds());
+
+		Booking updatedBooking = bookingRepository.save(booking);
+
+		logger.info("Booking cancelled successfully - ID: {}, User: {}, Beds restored: {}", bookingId,
+				booking.getUser().getEmail(), booking.getNumberOfBeds());
+
+		return bookingMapper.toResponse(updatedBooking);
+	}
 
 	public List<BookingResponse> getAllBookings() {
-		 logger.info("Fetching all bookings");
-		    return bookingRepository.findAll().stream()
-		            .map(bookingMapper::toResponse)
-		            .collect(Collectors.toList());
+		logger.info("Fetching all bookings");
+		return bookingRepository.findAll().stream().map(bookingMapper::toResponse).collect(Collectors.toList());
 
 	}
 
 	public BookingResponse getBookingById(Long bookingId) {
-		 logger.info("Fetching booking with ID: {}", bookingId);
-		    Booking booking = bookingRepository.findById(bookingId)
-		            .orElseThrow(() -> new ResourceNotFoundException("Booking", "bookingId", bookingId));
-		    return bookingMapper.toResponse(booking);
+		logger.info("Fetching booking with ID: {}", bookingId);
+		Booking booking = bookingRepository.findById(bookingId)
+				.orElseThrow(() -> new ResourceNotFoundException("Booking", "bookingId", bookingId));
+		return bookingMapper.toResponse(booking);
 
 	}
 
 	public List<BookingResponse> getBookingsByHostel(Long hostelId) {
 		logger.info("Fetching bookings for hostel ID: {}", hostelId);
-	    return bookingRepository.findByHostel_HostelId(hostelId).stream()
-	            .map(bookingMapper::toResponse)
-	            .collect(Collectors.toList());
+		return bookingRepository.findByHostel_HostelId(hostelId).stream().map(bookingMapper::toResponse)
+				.collect(Collectors.toList());
 
 	}
 
 	public List<BookingResponse> getBookingsByOwner(Long ownerId) {
-		 logger.info("Fetching bookings for owner ID: {}", ownerId);
-		 return bookingRepository.findByHostel_Owner_UserId(ownerId).stream()
-			        .map(bookingMapper::toResponse)
-			        .collect(Collectors.toList());
+		logger.info("Fetching bookings for owner ID: {}", ownerId);
+		return bookingRepository.findByHostel_Owner_UserId(ownerId).stream().map(bookingMapper::toResponse)
+				.collect(Collectors.toList());
 
 	}
 
 	public BookingResponse updateBookingStatus(Long bookingId, BookingStatus status) {
 		logger.info("Updating booking status - ID: {}, New Status: {}", bookingId, status);
-	    Booking booking = bookingRepository.findById(bookingId)
-	            .orElseThrow(() -> new ResourceNotFoundException("Booking", "bookingId", bookingId));
+		Booking booking = bookingRepository.findById(bookingId)
+				.orElseThrow(() -> new ResourceNotFoundException("Booking", "bookingId", bookingId));
 
-	    booking.setBookingStatus(status);
-	    Booking updatedBooking = bookingRepository.save(booking);
+		booking.setBookingStatus(status);
+		Booking updatedBooking = bookingRepository.save(booking);
 
-	    logger.info("Booking status updated successfully - ID: {}, Status: {}", bookingId, status);
-	    return bookingMapper.toResponse(updatedBooking);
+		logger.info("Booking status updated successfully - ID: {}, Status: {}", bookingId, status);
+		return bookingMapper.toResponse(updatedBooking);
 
 	}
 
 	public BookingStatisticsResponse getStatistics() {
-	    long total = bookingRepository.count();
-	    long confirmed = bookingRepository.countByBookingStatus(BookingStatus.CONFIRMED);
-	    long cancelled = bookingRepository.countByBookingStatus(BookingStatus.CANCELLED);
-	    long completed = bookingRepository.countByBookingStatus(BookingStatus.COMPLETED);
+		long total = bookingRepository.count();
+		long confirmed = bookingRepository.countByBookingStatus(BookingStatus.CONFIRMED);
+		long cancelled = bookingRepository.countByBookingStatus(BookingStatus.CANCELLED);
+		long completed = bookingRepository.countByBookingStatus(BookingStatus.COMPLETED);
 
-	    return new BookingStatisticsResponse(total, confirmed, cancelled, completed);
+		return new BookingStatisticsResponse(total, confirmed, cancelled, completed);
 	}
 
 	public List<BookingResponse> getBookingsByUser(long userId) {
-		 logger.info("Fetching bookings for userId={}", userId);
-	        List<Booking> bookings = bookingRepository.findByUser_UserId(userId);
-	        if (bookings.isEmpty()) {
-	            logger.warn("No bookings found for userId={}", userId);
-	            return Collections.emptyList();
-	        }
-	        return bookings.stream()
-	                       .map(bookingMapper::toResponse)
-	                       .collect(Collectors.toList());
-	    }
-
-
-
+		logger.info("Fetching bookings for userId={}", userId);
+		List<Booking> bookings = bookingRepository.findByUser_UserId(userId);
+		if (bookings.isEmpty()) {
+			logger.warn("No bookings found for userId={}", userId);
+			return Collections.emptyList();
+		}
+		return bookings.stream().map(bookingMapper::toResponse).collect(Collectors.toList());
 	}
-	
-	
 
+}

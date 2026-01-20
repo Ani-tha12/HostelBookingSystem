@@ -2,9 +2,5 @@ package com.hostel.enums;
 
 public enum BookingStatus {
 
-	PENDING,
-	CONFIRMED,
-    CANCELLED,
-	REJECTED,
-	COMPLETED
+	PENDING_PAYMENT, CONFIRMED, CANCELLED, REJECTED, COMPLETED
 }
