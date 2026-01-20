@@ -705,3 +705,519 @@ Caused by: java.sql.SQLIntegrityConstraintViolationException: Column 'available_
 2026-01-20 09:23:46 [RMI TCP Connection(26)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-01-20 09:23:46 [RMI TCP Connection(26)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2026-01-20 09:23:46 [RMI TCP Connection(26)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-20 09:23:53 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Starting HostelBookingSystemApplication using Java 17.0.12 with PID 12920 (D:\SpringCapstoneProject\HostelBookingSystem\target\classes started by user4 in D:\SpringCapstoneProject\HostelBookingSystem)
+2026-01-20 09:23:53 [restartedMain] INFO  c.h.HostelBookingSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-01-20 09:23:53 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-20 09:23:53 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-20 09:23:55 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-20 09:23:56 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 267 ms. Found 7 JPA repository interfaces.
+2026-01-20 09:23:58 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-01-20 09:23:58 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-20 09:23:58 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.50]
+2026-01-20 09:23:58 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-01-20 09:23:58 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 5277 ms
+2026-01-20 09:23:59 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-20 09:23:59 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.39.Final
+2026-01-20 09:23:59 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-01-20 09:24:00 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-20 09:24:00 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-20 09:24:01 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2d654bc0
+2026-01-20 09:24:01 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-20 09:24:01 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-20 09:24:01 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-01-20 09:24:01 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-20 09:24:05 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-20 09:24:07 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20 09:24:08 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-20 09:24:11 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-20 09:24:13 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-01-20 09:24:13 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-01-20 09:24:13 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Started HostelBookingSystemApplication in 22.505 seconds (process running for 24.543)
+2026-01-20 10:44:56 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 4 class path changes (0 additions, 0 deletions, 4 modifications)
+2026-01-20 10:44:56 [Thread-5] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-20 10:44:57 [RMI TCP Connection(84)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2026-01-20 10:44:57 [Thread-5] WARN  org.apache.tomcat.util.net.Acceptor - Interrupt was received while waiting for the acceptor thread [http-nio-8080-Acceptor] to stop
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1081)
+	at java.base/java.util.concurrent.CountDownLatch.await(CountDownLatch.java:276)
+	at org.apache.tomcat.util.net.Acceptor.stopMillis(Acceptor.java:183)
+	at org.apache.tomcat.util.net.NioEndpoint.stopInternal(NioEndpoint.java:326)
+	at org.apache.tomcat.util.net.AbstractEndpoint.stop(AbstractEndpoint.java:1554)
+	at org.apache.coyote.AbstractProtocol.stop(AbstractProtocol.java:721)
+	at org.apache.catalina.connector.Connector.stopInternal(Connector.java:1132)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:235)
+	at org.apache.catalina.core.StandardService.removeConnector(StandardService.java:297)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.lambda$removeServiceConnectors$1(TomcatWebServer.java:173)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.doWithConnectors(TomcatWebServer.java:192)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.removeServiceConnectors(TomcatWebServer.java:170)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.stop(TomcatWebServer.java:358)
+	at org.springframework.boot.web.servlet.context.WebServerStartStopLifecycle.stop(WebServerStartStopLifecycle.java:53)
+	at org.springframework.context.SmartLifecycle.stop(SmartLifecycle.java:120)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStop(DefaultLifecycleProcessor.java:463)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.stop(DefaultLifecycleProcessor.java:618)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.context.support.DefaultLifecycleProcessor.stopBeans(DefaultLifecycleProcessor.java:432)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onClose(DefaultLifecycleProcessor.java:323)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1175)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:179)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1129)
+	at org.springframework.boot.devtools.restart.Restarter.stop(Restarter.java:308)
+	at org.springframework.boot.devtools.restart.Restarter.lambda$restart$1(Restarter.java:250)
+	at org.springframework.boot.devtools.restart.Restarter$LeakSafeThread.run(Restarter.java:612)
+2026-01-20 10:44:57 [Thread-5] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20 10:44:57 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-20 10:44:57 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-20 10:44:57 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Starting HostelBookingSystemApplication using Java 17.0.12 with PID 12920 (D:\SpringCapstoneProject\HostelBookingSystem\target\classes started by user4 in D:\SpringCapstoneProject\HostelBookingSystem)
+2026-01-20 10:44:57 [restartedMain] INFO  c.h.HostelBookingSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-01-20 10:44:57 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown aborted with one or more requests still active
+2026-01-20 10:44:57 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-20 10:44:57 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 52 ms. Found 7 JPA repository interfaces.
+2026-01-20 10:44:58 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-01-20 10:44:58 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-20 10:44:58 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.50]
+2026-01-20 10:44:58 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-01-20 10:44:58 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 759 ms
+2026-01-20 10:44:58 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-20 10:44:58 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-01-20 10:44:58 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-20 10:44:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-01-20 10:44:58 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@d9ed8a4
+2026-01-20 10:44:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-01-20 10:44:58 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-20 10:44:58 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-01-20 10:44:58 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-20 10:44:58 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-20 10:44:58 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20 10:44:59 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-20 10:45:00 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-01-20 10:45:00 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-01-20 10:45:00 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Started HostelBookingSystemApplication in 2.873 seconds (process running for 4870.682)
+2026-01-20 10:45:00 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-01-20 11:15:58 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Starting HostelBookingSystemApplication using Java 17.0.12 with PID 6116 (D:\SpringCapstoneProject\HostelBookingSystem\target\classes started by user4 in D:\SpringCapstoneProject\HostelBookingSystem)
+2026-01-20 11:15:58 [restartedMain] INFO  c.h.HostelBookingSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-01-20 11:15:59 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-20 11:15:59 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-20 11:16:02 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-20 11:16:02 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 281 ms. Found 7 JPA repository interfaces.
+2026-01-20 11:16:05 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-01-20 11:16:05 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-20 11:16:05 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.50]
+2026-01-20 11:16:05 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-01-20 11:16:05 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 6374 ms
+2026-01-20 11:16:06 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-20 11:16:06 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.39.Final
+2026-01-20 11:16:06 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-01-20 11:16:07 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-20 11:16:07 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-20 11:16:08 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5c368aab
+2026-01-20 11:16:08 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-20 11:16:09 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-20 11:16:09 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-01-20 11:16:09 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-20 11:16:13 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-20 11:16:13 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20 11:16:14 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-20 11:16:18 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-20 11:16:20 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-01-20 11:16:21 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-01-20 11:16:21 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Started HostelBookingSystemApplication in 25.09 seconds (process running for 27.807)
+2026-01-20 12:01:50 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-20 12:01:50 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-01-20 12:01:50 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-01-20 12:01:51 [http-nio-8080-exec-2] INFO  com.hostel.service.FacilityService - Adding new facility - Name: AC
+2026-01-20 12:01:51 [http-nio-8080-exec-2] INFO  com.hostel.service.FacilityService - Facility created successfully - ID: 1, Name: AC
+2026-01-20 12:02:04 [http-nio-8080-exec-3] INFO  com.hostel.service.FacilityService - Adding new facility - Name: AC
+2026-01-20 12:02:04 [http-nio-8080-exec-3] WARN  com.hostel.service.FacilityService - Facility creation failed: Facility already exists - Name: AC
+2026-01-20 12:02:04 [http-nio-8080-exec-3] ERROR com.hostel.service.FacilityService - Facility creation failed: Facility already exists
+2026-01-20 12:02:04 [http-nio-8080-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.BadRequestException: Facility already exists]
+2026-01-20 12:02:32 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:02:32 [http-nio-8080-exec-5] WARN  com.hostel.service.UserService - Login failed: User not found with email - admin@gmail.com
+2026-01-20 12:02:32 [http-nio-8080-exec-5] ERROR com.hostel.service.UserService - Login failed for email: admin@gmail.com - Invalid email or password
+2026-01-20 12:02:32 [http-nio-8080-exec-5] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:02:57 [http-nio-8080-exec-6] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:02:57 [http-nio-8080-exec-6] WARN  com.hostel.service.UserService - Login failed: User not found with email - admin@gmail.com
+2026-01-20 12:02:57 [http-nio-8080-exec-6] ERROR com.hostel.service.UserService - Login failed for email: admin@gmail.com - Invalid email or password
+2026-01-20 12:02:57 [http-nio-8080-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:03:13 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:03:13 [http-nio-8080-exec-7] WARN  com.hostel.service.UserService - Login failed: User not found with email - admin@gmail.com
+2026-01-20 12:03:13 [http-nio-8080-exec-7] ERROR com.hostel.service.UserService - Login failed for email: admin@gmail.com - Invalid email or password
+2026-01-20 12:03:13 [http-nio-8080-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:04:15 [http-nio-8080-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `com.hostel.enums.UserRole` from String "Admin": not one of the values accepted for Enum class: [OWNER, ADMIN, USER]]
+2026-01-20 12:04:30 [http-nio-8080-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `com.hostel.enums.UserRole` from String "Admin": not one of the values accepted for Enum class: [OWNER, ADMIN, USER]]
+2026-01-20 12:08:06 [http-nio-8080-exec-4] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:08:06 [http-nio-8080-exec-4] WARN  com.hostel.service.UserService - Login failed: User not found with email - admin@gmail.com
+2026-01-20 12:08:06 [http-nio-8080-exec-4] ERROR com.hostel.service.UserService - Login failed for email: admin@gmail.com - Invalid email or password
+2026-01-20 12:08:06 [http-nio-8080-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:09:59 [http-nio-8080-exec-6] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:09:59 [http-nio-8080-exec-6] WARN  com.hostel.service.UserService - Login failed: User not found with email - admin@gmail.com
+2026-01-20 12:09:59 [http-nio-8080-exec-6] ERROR com.hostel.service.UserService - Login failed for email: admin@gmail.com - Invalid email or password
+2026-01-20 12:09:59 [http-nio-8080-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:10:42 [http-nio-8080-exec-9] INFO  com.hostel.service.FacilityService - Adding new facility - Name: Wifi
+2026-01-20 12:10:42 [http-nio-8080-exec-9] INFO  com.hostel.service.FacilityService - Facility created successfully - ID: 2, Name: Wifi
+2026-01-20 12:12:24 [http-nio-8080-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `com.hostel.enums.UserRole` from String "Admin": not one of the values accepted for Enum class: [OWNER, ADMIN, USER]]
+2026-01-20 12:12:41 [http-nio-8080-exec-1] INFO  com.hostel.service.UserService - Attempting to register user with email: john@gmail.com
+2026-01-20 12:12:42 [http-nio-8080-exec-1] INFO  com.hostel.service.UserService - User registration - Status set to ACTIVE for: john@gmail.com
+2026-01-20 12:12:42 [http-nio-8080-exec-1] INFO  com.hostel.service.UserService - User registered successfully with ID: 1 and email: john@gmail.com
+2026-01-20 12:13:06 [http-nio-8080-exec-4] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 12:13:07 [http-nio-8080-exec-4] WARN  com.hostel.service.UserService - Login failed: Invalid password for email - john@gmail.com
+2026-01-20 12:13:07 [http-nio-8080-exec-4] ERROR com.hostel.service.UserService - Login failed for email: john@gmail.com - Invalid email or password
+2026-01-20 12:13:07 [http-nio-8080-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:13:51 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:13:51 [http-nio-8080-exec-5] WARN  com.hostel.service.UserService - Login failed: User not found with email - admin@gmail.com
+2026-01-20 12:13:51 [http-nio-8080-exec-5] ERROR com.hostel.service.UserService - Login failed for email: admin@gmail.com - Invalid email or password
+2026-01-20 12:13:51 [http-nio-8080-exec-5] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:16:14 [http-nio-8080-exec-9] INFO  com.hostel.service.FacilityService - Adding new facility - Name: Wifi
+2026-01-20 12:16:14 [http-nio-8080-exec-9] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1146, SQLState: 42S02
+2026-01-20 12:16:14 [http-nio-8080-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Table 'hostel_booking_db.facilities' doesn't exist
+2026-01-20 12:16:14 [http-nio-8080-exec-9] ERROR com.hostel.service.FacilityService - Unexpected error during facility creation
+org.springframework.dao.InvalidDataAccessResourceUsageException: JDBC exception executing SQL [select f1_0.facility_id from facilities f1_0 where f1_0.facility_name=? limit ?] [Table 'hostel_booking_db.facilities' doesn't exist] [n/a]; SQL [n/a]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:281)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy4/jdk.proxy4.$Proxy149.existsByFacilityName(Unknown Source)
+	at com.hostel.service.FacilityService.addFacility(FacilityService.java:38)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
+	at com.hostel.service.FacilityService$$SpringCGLIB$$0.addFacility(<generated>)
+	at com.hostel.controller.FacilityController.addFacility(FacilityController.java:24)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.hostel.config.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:40)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.hostel.config.TokenBlacklistFilter.doFilterInternal(TokenBlacklistFilter.java:43)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$4(HandlerMappingIntrospector.java:267)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:88)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1774)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:973)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:491)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: org.hibernate.exception.SQLGrammarException: JDBC exception executing SQL [select f1_0.facility_id from facilities f1_0 where f1_0.facility_name=? limit ?] [Table 'hostel_booking_db.facilities' doesn't exist] [n/a]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:66)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94)
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:269)
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.getResultSet(DeferredResultSetAccess.java:172)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.<init>(JdbcValuesResultSetImpl.java:74)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.resolveJdbcValuesSource(JdbcSelectExecutorStandardImpl.java:355)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:137)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:364)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.Query.getResultList(Query.java:120)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$ExistsExecution.doExecute(JpaQueryExecution.java:336)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 131 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: Table 'hostel_booking_db.facilities' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:112)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:988)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:1056)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeQuery(HikariProxyPreparedStatement.java)
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:251)
+	... 159 common frames omitted
+2026-01-20 12:16:14 [http-nio-8080-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.RuntimeException: Facility creation failed]
+2026-01-20 12:16:34 [RMI TCP Connection(64)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2026-01-20 12:16:34 [RMI TCP Connection(64)-127.0.0.1] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-20 12:16:34 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-01-20 12:16:34 [RMI TCP Connection(64)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20 12:16:34 [RMI TCP Connection(64)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-20 12:16:34 [RMI TCP Connection(64)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-20 12:16:41 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Starting HostelBookingSystemApplication using Java 17.0.12 with PID 4896 (D:\SpringCapstoneProject\HostelBookingSystem\target\classes started by user4 in D:\SpringCapstoneProject\HostelBookingSystem)
+2026-01-20 12:16:41 [restartedMain] INFO  c.h.HostelBookingSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2026-01-20 12:16:41 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-20 12:16:41 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-20 12:16:43 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-20 12:16:44 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 269 ms. Found 7 JPA repository interfaces.
+2026-01-20 12:16:46 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-01-20 12:16:46 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-20 12:16:46 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.50]
+2026-01-20 12:16:46 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-01-20 12:16:46 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 5377 ms
+2026-01-20 12:16:47 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-20 12:16:47 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.39.Final
+2026-01-20 12:16:47 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-01-20 12:16:48 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-20 12:16:48 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-20 12:16:49 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@332abf7b
+2026-01-20 12:16:49 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-20 12:16:50 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-20 12:16:50 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-01-20 12:16:50 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-20 12:16:54 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-20 12:16:56 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20 12:16:57 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-20 12:17:01 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-20 12:17:03 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-01-20 12:17:03 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-01-20 12:17:03 [restartedMain] INFO  c.h.HostelBookingSystemApplication - Started HostelBookingSystemApplication in 24.651 seconds (process running for 27.021)
+2026-01-20 12:17:10 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-20 12:17:10 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-01-20 12:17:10 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2026-01-20 12:17:11 [http-nio-8080-exec-2] INFO  com.hostel.service.FacilityService - Adding new facility - Name: Wifi
+2026-01-20 12:17:11 [http-nio-8080-exec-2] INFO  com.hostel.service.FacilityService - Facility created successfully - ID: 1, Name: Wifi
+2026-01-20 12:18:08 [http-nio-8080-exec-3] INFO  com.hostel.service.FacilityService - Adding new facility - Name: Parking
+2026-01-20 12:18:08 [http-nio-8080-exec-3] INFO  com.hostel.service.FacilityService - Facility created successfully - ID: 2, Name: Parking
+2026-01-20 12:19:24 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - Attempting to register user with email: admin@gmail.com
+2026-01-20 12:19:25 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - User registration - Status set to ACTIVE for: admin@gmail.com
+2026-01-20 12:19:25 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - User registered successfully with ID: 1 and email: admin@gmail.com
+2026-01-20 12:20:10 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:20:10 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - Login successful for user: admin@gmail.com (ID: 1) with role: ADMIN
+2026-01-20 12:22:24 [http-nio-8080-exec-10] INFO  com.hostel.service.UserService - Attempting to register user with email: owner@gmail.com
+2026-01-20 12:22:24 [http-nio-8080-exec-10] INFO  com.hostel.service.UserService - Owner registration - Status set to PENDING for: owner@gmail.com
+2026-01-20 12:22:24 [http-nio-8080-exec-10] INFO  com.hostel.service.UserService - User registered successfully with ID: 2 and email: owner@gmail.com
+2026-01-20 12:23:51 [http-nio-8080-exec-2] INFO  com.hostel.service.UserService - Attempting to approve owner with ID: 2
+2026-01-20 12:23:51 [http-nio-8080-exec-2] INFO  com.hostel.service.UserService - Owner approved successfully - ID: 2, Email: owner@gmail.com
+2026-01-20 12:25:16 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - Login attempt for email: admin@gmail.com
+2026-01-20 12:25:16 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - Login successful for user: admin@gmail.com (ID: 1) with role: ADMIN
+2026-01-20 12:26:18 [http-nio-8080-exec-9] INFO  com.hostel.service.HostelService - Adding new hostel - Name: Sunshine Hostel, City: Bangalore, Owner ID: 2
+2026-01-20 12:26:18 [http-nio-8080-exec-9] INFO  com.hostel.service.HostelService - Hostel created successfully - ID: 1, Name: Sunshine Hostel, Owner: Owner Mike, Requires approval
+2026-01-20 12:27:17 [http-nio-8080-exec-10] INFO  com.hostel.service.HostelService - Attempting to approve hostel - ID: 1
+2026-01-20 12:27:17 [http-nio-8080-exec-10] INFO  com.hostel.service.HostelService - Hostel approved successfully - ID: 1, Name: Sunshine Hostel, Owner: Owner Mike
+2026-01-20 12:28:53 [http-nio-8080-exec-3] INFO  com.hostel.service.UserService - Login attempt for email: owner@gmail.com
+2026-01-20 12:28:53 [http-nio-8080-exec-3] INFO  com.hostel.service.UserService - Login successful for user: owner@gmail.com (ID: 2) with role: OWNER
+2026-01-20 12:29:43 [http-nio-8080-exec-4] INFO  com.hostel.service.RoomService - Adding new room - Hostel ID: 1, Type: SHARED, Beds: 4, Price: 500.0
+2026-01-20 12:29:43 [http-nio-8080-exec-4] INFO  com.hostel.service.RoomService - Room created successfully - ID: 1, Hostel: Sunshine Hostel, Type: SHARED, Beds: 4
+2026-01-20 12:30:48 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - Attempting to register user with email: john@gmail.com
+2026-01-20 12:30:49 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - User registration - Status set to ACTIVE for: john@gmail.com
+2026-01-20 12:30:49 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - User registered successfully with ID: 3 and email: john@gmail.com
+2026-01-20 12:33:19 [http-nio-8080-exec-9] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 12:33:20 [http-nio-8080-exec-9] WARN  com.hostel.service.UserService - Login failed: Invalid password for email - john@gmail.com
+2026-01-20 12:33:20 [http-nio-8080-exec-9] ERROR com.hostel.service.UserService - Login failed for email: john@gmail.com - Invalid email or password
+2026-01-20 12:33:20 [http-nio-8080-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:33:31 [http-nio-8080-exec-1] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 12:33:31 [http-nio-8080-exec-1] WARN  com.hostel.service.UserService - Login failed: Invalid password for email - john@gmail.com
+2026-01-20 12:33:31 [http-nio-8080-exec-1] ERROR com.hostel.service.UserService - Login failed for email: john@gmail.com - Invalid email or password
+2026-01-20 12:33:31 [http-nio-8080-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 12:34:16 [http-nio-8080-exec-2] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 12:34:17 [http-nio-8080-exec-2] INFO  com.hostel.service.UserService - Login successful for user: john@gmail.com (ID: 3) with role: USER
+2026-01-20 12:35:08 [http-nio-8080-exec-3] INFO  com.hostel.service.HostelService - Searching hostels in city: Bangalore
+2026-01-20 12:35:08 [http-nio-8080-exec-3] INFO  com.hostel.service.HostelService - Found 1 hostels in city: Bangalore
+2026-01-20 12:36:05 [http-nio-8080-exec-4] INFO  com.hostel.service.RoomService - Fetching available rooms for hostel ID: 1
+2026-01-20 12:36:05 [http-nio-8080-exec-4] INFO  com.hostel.service.RoomService - Retrieved 1 available rooms for hostel ID: 1
+2026-01-20 12:38:51 [http-nio-8080-exec-8] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot construct instance of `com.hostel.dto.request.BookingRequest` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value ('userId')]
+2026-01-20 12:39:45 [http-nio-8080-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot construct instance of `com.hostel.dto.request.BookingRequest` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value ('userId')]
+2026-01-20 12:40:02 [http-nio-8080-exec-2] INFO  com.hostel.service.BookingService - Creating booking - User ID: 1, Hostel ID: 1, Room ID: 1
+2026-01-20 12:40:02 [http-nio-8080-exec-2] INFO  com.hostel.service.BookingService - Booking created - ID: 1, Status: PENDING_PAYMENT, Amount: 5000.0
+2026-01-20 12:40:50 [http-nio-8080-exec-3] INFO  com.hostel.service.BookingService - Fetching booking with ID: 1
+2026-01-20 12:44:46 [http-nio-8080-exec-5] INFO  com.hostel.service.UserService - Forgot password request for email: john@gmail.com
+2026-01-20 12:44:46 [http-nio-8080-exec-5] ERROR com.hostel.service.UserService - User not found with email: john@gmail.com and username: John Doe
+2026-01-20 12:44:46 [http-nio-8080-exec-5] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.ResourceNotFoundException: User not found with provided credentials]
+2026-01-20 12:44:57 [http-nio-8080-exec-8] INFO  com.hostel.service.UserService - Forgot password request for email: john@gmail.com
+2026-01-20 12:44:57 [http-nio-8080-exec-8] INFO  com.hostel.service.UserService - Reset token generated for user: john@gmail.com
+2026-01-20 12:45:39 [http-nio-8080-exec-9] INFO  com.hostel.service.UserService - Reset password request with token
+2026-01-20 12:45:39 [http-nio-8080-exec-9] ERROR com.hostel.service.UserService - Invalid reset token
+2026-01-20 12:45:39 [http-nio-8080-exec-9] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.BadRequestException: Invalid or expired reset token]
+2026-01-20 12:46:33 [http-nio-8080-exec-10] INFO  com.hostel.service.UserService - Reset password request with token
+2026-01-20 12:46:33 [http-nio-8080-exec-10] ERROR com.hostel.service.UserService - Username doesn't match for reset token - Expected: John, Got: John Doe
+2026-01-20 12:46:33 [http-nio-8080-exec-10] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid username]
+2026-01-20 12:46:44 [http-nio-8080-exec-2] INFO  com.hostel.service.UserService - Reset password request with token
+2026-01-20 12:46:44 [http-nio-8080-exec-2] INFO  com.hostel.service.UserService - Password reset successfully for user: john@gmail.com
+2026-01-20 13:37:33 [http-nio-8080-exec-6] INFO  com.hostel.service.HostelService - Attempting to approve hostel - ID: 1
+2026-01-20 13:37:33 [http-nio-8080-exec-6] INFO  com.hostel.service.HostelService - Hostel approved successfully - ID: 1, Name: Sunshine Hostel, Owner: Owner Mike
+2026-01-20 13:42:52 [http-nio-8080-exec-1] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 13:42:52 [http-nio-8080-exec-1] WARN  com.hostel.service.UserService - Login failed: Invalid password for email - john@gmail.com
+2026-01-20 13:42:52 [http-nio-8080-exec-1] ERROR com.hostel.service.UserService - Login failed for email: john@gmail.com - Invalid email or password
+2026-01-20 13:42:52 [http-nio-8080-exec-1] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 13:43:33 [http-nio-8080-exec-2] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 13:43:33 [http-nio-8080-exec-2] WARN  com.hostel.service.UserService - Login failed: Invalid password for email - john@gmail.com
+2026-01-20 13:43:33 [http-nio-8080-exec-2] ERROR com.hostel.service.UserService - Login failed for email: john@gmail.com - Invalid email or password
+2026-01-20 13:43:33 [http-nio-8080-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 13:44:43 [http-nio-8080-exec-4] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 13:44:43 [http-nio-8080-exec-4] WARN  com.hostel.service.UserService - Login failed: Invalid password for email - john@gmail.com
+2026-01-20 13:44:43 [http-nio-8080-exec-4] ERROR com.hostel.service.UserService - Login failed for email: john@gmail.com - Invalid email or password
+2026-01-20 13:44:43 [http-nio-8080-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 13:44:59 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 13:45:00 [http-nio-8080-exec-7] WARN  com.hostel.service.UserService - Login failed: Invalid password for email - john@gmail.com
+2026-01-20 13:45:00 [http-nio-8080-exec-7] ERROR com.hostel.service.UserService - Login failed for email: john@gmail.com - Invalid email or password
+2026-01-20 13:45:00 [http-nio-8080-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.UnauthorizedException: Invalid email or password]
+2026-01-20 13:46:28 [http-nio-8080-exec-9] INFO  com.hostel.service.UserService - Forgot password request for email: john@gmail.com
+2026-01-20 13:46:28 [http-nio-8080-exec-9] INFO  com.hostel.service.UserService - Reset token generated for user: john@gmail.com
+2026-01-20 14:32:19 [http-nio-8080-exec-4] INFO  com.hostel.service.BookingService - Creating booking - User ID: 1, Hostel ID: 1, Room ID: 1
+2026-01-20 14:32:19 [http-nio-8080-exec-4] INFO  com.hostel.service.BookingService - Booking created - ID: 2, Status: PENDING_PAYMENT, Amount: 5000.0
+2026-01-20 14:33:02 [http-nio-8080-exec-7] INFO  com.hostel.service.PaymentService - Processing refund for payment ID: 1
+2026-01-20 14:33:02 [http-nio-8080-exec-7] ERROR com.hostel.service.PaymentService - Payment not found with ID: 1
+2026-01-20 14:33:02 [http-nio-8080-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.hostel.exception.ResourceNotFoundException: Payment not found with paymentId: '1']
+2026-01-20 14:48:36 [http-nio-8080-exec-9] INFO  com.hostel.service.BookingService - Creating booking - User ID: 1, Hostel ID: 1, Room ID: 1
+2026-01-20 14:48:36 [http-nio-8080-exec-9] INFO  com.hostel.service.BookingService - Booking created - ID: 3, Status: PENDING_PAYMENT, Amount: 5000.0
+2026-01-20 14:48:38 [http-nio-8080-exec-10] INFO  com.hostel.service.BookingService - Creating booking - User ID: 1, Hostel ID: 1, Room ID: 1
+2026-01-20 14:48:38 [http-nio-8080-exec-10] INFO  com.hostel.service.BookingService - Booking created - ID: 4, Status: PENDING_PAYMENT, Amount: 5000.0
+2026-01-20 14:50:34 [http-nio-8080-exec-3] INFO  com.hostel.service.BookingService - Attempting to cancel booking - ID: 1, Reason: Change
+2026-01-20 14:50:34 [http-nio-8080-exec-3] INFO  com.hostel.service.BookingService - Booking cancelled successfully - ID: 1, User: admin@gmail.com, Beds restored: 2
+2026-01-20 14:55:21 [http-nio-8080-exec-9] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 14:55:21 [http-nio-8080-exec-9] INFO  com.hostel.service.UserService - Login successful for user: john@gmail.com (ID: 3) with role: USER
+2026-01-20 14:56:29 [http-nio-8080-exec-3] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'userId': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: "login"]
+2026-01-20 14:56:47 [http-nio-8080-exec-6] INFO  com.hostel.service.UserService - Login attempt for email: john@gmail.com
+2026-01-20 14:56:48 [http-nio-8080-exec-6] INFO  com.hostel.service.UserService - Login successful for user: john@gmail.com (ID: 3) with role: USER
+2026-01-20 14:57:33 [http-nio-8080-exec-7] INFO  com.hostel.service.UserService - User retrieved successfully: admin@gmail.com (ID: 1)
+2026-01-20 15:53:14 [RMI TCP Connection(221)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2026-01-20 15:53:14 [RMI TCP Connection(221)-127.0.0.1] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-20 15:53:14 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-01-20 15:53:14 [RMI TCP Connection(221)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-20 15:53:14 [RMI TCP Connection(221)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-20 15:53:14 [RMI TCP Connection(221)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
